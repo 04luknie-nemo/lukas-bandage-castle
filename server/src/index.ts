@@ -1,6 +1,7 @@
 import express from 'express'
 require('dotenv').config()
 import authRoutes from './routes/auth'
+import monsterRoutes from './routes/monsters'
 
 const app = express()
 app.use(express.json())
@@ -10,6 +11,7 @@ app.get('/api/health', (req, res) => {
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api/monsters', monsterRoutes)
 
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log('listening on ' + port))
