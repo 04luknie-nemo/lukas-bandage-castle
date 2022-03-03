@@ -37,3 +37,13 @@ body {
   padding: 6px;
   text-align: left;
 }
+.form label {
+  display: block;
+  margin-top: 8px;
+  font-weight: bold;
+}
+.form input,
+.form textarea,
+.form select {
+  width: 300px;
+}
