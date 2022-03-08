@@ -36,3 +36,17 @@ CREATE TABLE IF NOT EXISTS tbl_monster (
   status VARCHAR(32) DEFAULT 'IN_RESIDENCE',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS tbl_stay (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  monster_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  reason VARCHAR(32) NOT NULL,
+  status VARCHAR(32) DEFAULT 'BOOKED',
+  start_date DATE,
+  expected_pickup DATE,
+  checked_in_at DATETIME NULL,
+  checked_out_at DATETIME NULL,
+  daily_rate DECIMAL(10,2) DEFAULT 10.00,
+  notes TEXT
+);
