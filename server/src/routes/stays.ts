@@ -43,7 +43,7 @@ router.post('/', checkAuth, staffOnly, async (req: any, res) => {
     if (existing.length) return res.status(400).json({ error: 'monster already has a stay' })
     const result = await q(
       'INSERT INTO tbl_stay (monster_id, customer_id, reason, start_date, expected_pickup, daily_rate, notes) VALUES (?,?,?,?,?,?,?)',
-      [s.monster_id, s.customer_id, s.reason, s.start_date, s.expected_pickup, s.daily_rate || 10, s.notes]
+      [s.monster_id, s.customer_id, s.reason, s.start_date, s.expected_pickup, parseFloat(s.daily_rate) || 10, s.notes || null]
     )
     res.json({ id: result.insertId })
   } catch (e) {
