@@ -50,3 +50,31 @@ CREATE TABLE IF NOT EXISTS tbl_stay (
   daily_rate DECIMAL(10,2) DEFAULT 10.00,
   notes TEXT
 );
+
+CREATE TABLE IF NOT EXISTS tbl_invoice (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  stay_id INT NULL,
+  customer_id INT NOT NULL,
+  issued_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  due_date DATE,
+  total DECIMAL(10,2) DEFAULT 0,
+  status VARCHAR(16) DEFAULT 'UNPAID'
+);
+
+CREATE TABLE IF NOT EXISTS tbl_invoice_line (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  invoice_id INT NOT NULL,
+  description VARCHAR(255),
+  qty INT DEFAULT 1,
+  unit_price DECIMAL(10,2),
+  amount DECIMAL(10,2),
+  kind VARCHAR(16) DEFAULT 'OTHER'
+);
+
+CREATE TABLE IF NOT EXISTS tbl_payment (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  invoice_id INT NOT NULL,
+  amount DECIMAL(10,2),
+  method VARCHAR(16) DEFAULT 'GOLD',
+  paid_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

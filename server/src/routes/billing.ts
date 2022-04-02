@@ -1,0 +1,65 @@
+import express from 'express'
+import { query, q } from '../db'
+import { checkAuth, staffOnly } from '../middleware/checkAuth'
+import { createInvoiceForStay } from '../lib/billing'
+
+const router = express.Router()
+
+router.get('/invoices', checkAuth, (req: any, res) => {
+  let sql =
+    'SELECT i.*, c.first_name, c.last_name, c.title FROM tbl_invoice i JOIN tbl_customer c ON c.id = i.customer_id'
+  const params: any[] = []
+  if (req.query.customer_id) {
+    sql += ' WHERE i.customer_id = ?'
+    params.push(req.query.customer_id)
+  }
+  sql += ' ORDER BY i.issued_at DESC'
+  query(sql, params, (err: any, rows: any) => {
+    if (err) return res.status(500).send('oops')
+    res.json(rows)
+  })
+})
+
+router.get('/invoices/:id', checkAuth, async (req: any, res) => {
+  try {
+    const rows = await q(
+      'SELECT i.*, c.first_name, c.last_name, c.title, c.lair_address FROM tbl_invoice i JOIN tbl_customer c ON c.id = i.customer_id WHERE i.id = ?',
+      [req.params.id]
+    )
+    if (!rows[0]) return res.status(404).json({ error: 'not found' })
+    const invoice = rows[0]
+    invoice.lines = await q('SELECT * FROM tbl_invoice_line WHERE invoice_id = ?', [req.params.id])
+    invoice.payments = await q('SELECT * FROM tbl_payment WHERE invoice_id = ?', [req.params.id])
+    res.json(invoice)
+  } catch (e) {
+    res.status(500).send('oops')
+  }
+})
+
+router.post('/invoices/stay/:stayId', checkAuth, staffOnly, async (req: any, res) => {
+  try {
+    const id = await createInvoiceForStay(req.params.stayId)
+    res.json({ id })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/invoices/:id/payments', checkAuth, staffOnly, async (req: any, res) => {
+  const amount = parseFloat(req.body.amount)
+  if (!amount) return res.status(400).json({ error: 'amount?' })
+  await q('INSERT INTO tbl_payment (invoice_id, amount, method) VALUES (?,?,?)', [req.params.id, amount, req.body.method || 'GOLD'])
+  const inv = (await q('SELECT total FROM tbl_invoice WHERE id = ?', [req.params.id]))[0]
+  const paid = (await q('SELECT SUM(amount) as paid FROM tbl_payment WHERE invoice_id = ?', [req.params.id]))[0].paid
+  if (paid >= inv.total) await q("UPDATE tbl_invoice SET status = 'PAID' WHERE id = ?", [req.params.id])
+  res.json({ ok: true })
+})
+
+router.post('/invoices/:id/void', checkAuth, staffOnly, (req: any, res) => {
+  query("UPDATE tbl_invoice SET status = 'VOID' WHERE id = ?", [req.params.id], (err: any) => {
+    if (err) return res.status(500).send('oops')
+    res.json({ ok: true })
+  })
+})
+
+export default router
