@@ -7,6 +7,8 @@ import CustomerDetailPage from './pages/CustomerDetailPage'
 import StayListPage from './pages/StayListPage'
 import StayDetailPage from './pages/StayDetailPage'
 import NewStayPage from './pages/NewStayPage'
+import InvoiceListPage from './pages/InvoiceListPage'
+import InvoiceDetailPage from './pages/InvoiceDetailPage'
 
 function Home() {
   return <div className="page">welcome to the castle</div>
@@ -20,6 +22,7 @@ export default function App() {
         <Link to="/monsters">Monsters</Link>
         <Link to="/customers">Customers</Link>
         <Link to="/stays">Stays</Link>
+        <Link to="/invoices">Invoices</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,6 +33,8 @@ export default function App() {
         <Route path="/stays" element={<StayListPage />} />
         <Route path="/stays/new" element={<NewStayPage />} />
         <Route path="/stays/:id" element={<StayDetailPage />} />
+        <Route path="/invoices" element={<InvoiceListPage />} />
+        <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
       </Routes>
     </div>
   )
