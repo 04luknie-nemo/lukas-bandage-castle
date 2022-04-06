@@ -1,6 +1,7 @@
 import express from 'express'
 import { query, q } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
+import { createInvoiceForStay } from '../lib/billing'
 
 const router = express.Router()
 
@@ -71,7 +72,14 @@ router.post('/:id/checkout', checkAuth, staffOnly, (req: any, res) => {
     query(
       "UPDATE tbl_monster SET status = 'HOME' WHERE id = (SELECT monster_id FROM tbl_stay WHERE id = ?)",
       [req.params.id],
-      () => res.json({ ok: true })
+      () => {
+        createInvoiceForStay(req.params.id)
+          .then((invoiceId) => res.json({ ok: true, invoice_id: invoiceId }))
+          .catch((e) => {
+            console.log('invoice failed', e)
+            res.json({ ok: true })
+          })
+      }
     )
   })
 })
