@@ -6,6 +6,17 @@ export function nights(start: any, end: any) {
   return n < 1 ? 1 : n
 }
 
+export const LATE_FEE_PER_DAY = 25
+
+// days the owner was late picking up. pickup day counts.
+export function lateDays(expectedPickup: any, checkedOut: any) {
+  if (!expectedPickup) return 0
+  const pickup = moment(expectedPickup).startOf('day')
+  const out = moment(checkedOut).startOf('day')
+  if (out.isBefore(pickup)) return 0
+  return out.diff(pickup, 'days') + 1
+}
+
 export async function createInvoiceForStay(stayId: any) {
   const stays = await q('SELECT * FROM tbl_stay WHERE id = ?', [stayId])
   const stay = stays[0]
@@ -15,6 +26,11 @@ export async function createInvoiceForStay(stayId: any) {
   const n = nights(stay.checked_in_at || stay.start_date, end)
   const lines: any[] = []
   lines.push({ description: n + ' nights (' + stay.reason.toLowerCase() + ')', qty: n, unit_price: stay.daily_rate, amount: n * stay.daily_rate, kind: 'STAY' })
+
+  const late = lateDays(stay.expected_pickup, end)
+  if (late > 0 && stay.reason != 'SURRENDER') {
+    lines.push({ description: 'Late pickup (' + late + ' days)', qty: late, unit_price: LATE_FEE_PER_DAY, amount: late * LATE_FEE_PER_DAY, kind: 'LATE_FEE' })
+  }
 
   let total = 0
   for (const l of lines) total += l.amount
