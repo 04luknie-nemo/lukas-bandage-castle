@@ -2,8 +2,16 @@ import express from 'express'
 import { query, q } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
 import { createInvoiceForStay } from '../lib/billing'
+import { sendRaven } from '../lib/ravenPost'
 
 const router = express.Router()
+
+function notifyOwner(stayId: any, what: string) {
+  query('SELECT s.customer_id, m.name FROM tbl_stay s JOIN tbl_monster m ON m.id = s.monster_id WHERE s.id = ?', [stayId], (err: any, rows: any) => {
+    if (err || !rows[0]) return
+    sendRaven(rows[0].customer_id, rows[0].name + ' ' + what, 'Greetings from Bandage Castle! ' + rows[0].name + ' ' + what)
+  })
+}
 
 const STAY_SELECT =
   'SELECT s.*, m.name as monster_name, m.species, c.title, c.first_name, c.last_name FROM tbl_stay s JOIN tbl_monster m ON m.id = s.monster_id JOIN tbl_customer c ON c.id = s.customer_id'
@@ -57,6 +65,7 @@ router.post('/:id/checkin', checkAuth, staffOnly, (req: any, res) => {
   query("UPDATE tbl_stay SET status = 'CHECKED_IN', checked_in_at = NOW() WHERE id = ? AND status = 'BOOKED'", [req.params.id], (err: any, result: any) => {
     if (err) return res.status(500).send('oops')
     if (!result.affectedRows) return res.status(400).json({ error: 'cant check in' })
+    notifyOwner(req.params.id, 'has arrived safely at Bandage Castle')
     query(
       "UPDATE tbl_monster SET status = 'IN_RESIDENCE' WHERE id = (SELECT monster_id FROM tbl_stay WHERE id = ?)",
       [req.params.id],
@@ -69,6 +78,7 @@ router.post('/:id/checkout', checkAuth, staffOnly, (req: any, res) => {
   query("UPDATE tbl_stay SET status = 'CHECKED_OUT', checked_out_at = NOW() WHERE id = ? AND status = 'CHECKED_IN'", [req.params.id], (err: any, result: any) => {
     if (err) return res.status(500).send('oops')
     if (!result.affectedRows) return res.status(400).json({ error: 'cant check out' })
+    notifyOwner(req.params.id, 'has been checked out. Safe travels!')
     query(
       "UPDATE tbl_monster SET status = 'HOME' WHERE id = (SELECT monster_id FROM tbl_stay WHERE id = ?)",
       [req.params.id],

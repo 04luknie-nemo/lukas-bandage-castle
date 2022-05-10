@@ -1,5 +1,7 @@
 import moment from 'moment'
 import { q } from '../db'
+import { sendRaven } from './ravenPost'
+import { formatGold } from './money'
 
 export function nights(start: any, end: any) {
   const n = moment(end).startOf('day').diff(moment(start).startOf('day'), 'days')
@@ -48,5 +50,6 @@ export async function createInvoiceForStay(stayId: any) {
       l.kind,
     ])
   }
+  sendRaven(stay.customer_id, 'Your invoice #' + invoiceId, 'Total due: ' + formatGold(total) + ' by ' + due + '. Pay in gold, gems or (reluctantly) IOU.')
   return invoiceId
 }
