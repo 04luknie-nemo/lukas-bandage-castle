@@ -5,7 +5,12 @@ import { checkAuth, staffOnly } from '../middleware/checkAuth'
 const router = express.Router()
 
 router.get('/', checkAuth, (req: any, res) => {
-  query('SELECT * FROM tbl_monster ORDER BY name', (err: any, rows: any) => {
+  let sql = 'SELECT * FROM tbl_monster'
+  if (req.query.search) {
+    sql += " WHERE name LIKE '%" + req.query.search + "%' OR species LIKE '%" + req.query.search + "%'"
+  }
+  sql += ' ORDER BY name'
+  query(sql, (err: any, rows: any) => {
     if (err) return res.status(500).send('oops')
     res.json(rows)
   })
