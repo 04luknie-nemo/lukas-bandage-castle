@@ -1,6 +1,7 @@
 import express from 'express'
 import { query } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
+import { ageInYears } from '../lib/dates'
 
 const router = express.Router()
 
@@ -20,7 +21,9 @@ router.get('/:id', checkAuth, (req: any, res) => {
   query('SELECT * FROM tbl_monster WHERE id = ?', [req.params.id], (err: any, rows: any) => {
     if (err) return res.status(500).send('oops')
     if (!rows[0]) return res.status(404).json({ error: 'no such monster' })
-    res.json(rows[0])
+    const m = rows[0]
+    m.age = ageInYears(m.birth_date)
+    res.json(m)
   })
 })
 

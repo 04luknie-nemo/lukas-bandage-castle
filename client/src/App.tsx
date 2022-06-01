@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import MonsterListPage from './pages/MonsterListPage'
+import MonsterDetailPage from './pages/MonsterDetailPage'
 import CustomerListPage from './pages/CustomerListPage'
 import CustomerDetailPage from './pages/CustomerDetailPage'
 import StayListPage from './pages/StayListPage'
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/monsters" element={<MonsterListPage />} />
+        <Route path="/monsters/:id" element={<MonsterDetailPage />} />
         <Route path="/customers" element={<CustomerListPage />} />
         <Route path="/customers/:id" element={<CustomerDetailPage />} />
         <Route path="/stays" element={<StayListPage />} />
