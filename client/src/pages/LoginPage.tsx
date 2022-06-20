@@ -28,6 +28,7 @@ export default class LoginPage extends React.Component<any, State> {
           <button type="submit">Log in</button>
           {this.state.error && <p className="error">{this.state.error}</p>}
         </form>
+        <a href="/forgot-password">forgot password?</a>
       </div>
     )
   }

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import MonsterListPage from './pages/MonsterListPage'
 import MonsterDetailPage from './pages/MonsterDetailPage'
 import CustomerListPage from './pages/CustomerListPage'
@@ -28,6 +30,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/monsters" element={<MonsterListPage />} />
         <Route path="/monsters/:id" element={<MonsterDetailPage />} />
         <Route path="/customers" element={<CustomerListPage />} />
