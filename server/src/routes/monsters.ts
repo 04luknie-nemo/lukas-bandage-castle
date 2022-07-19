@@ -11,6 +11,22 @@ router.get('/', checkAuth, (req: any, res) => {
     sql += " WHERE name LIKE '%" + req.query.search + "%' OR species LIKE '%" + req.query.search + "%'"
   }
   sql += ' ORDER BY name'
+
+  // paged version for the list page. other places still want the plain array
+  if (req.query.page) {
+    const page = parseInt(req.query.page) || 1
+    const size = parseInt(req.query.size) || 25
+    const countSql = sql.replace('SELECT *', 'SELECT COUNT(*) as n').replace(' ORDER BY name', '')
+    query(countSql, (err: any, countRows: any) => {
+      if (err) return res.status(500).send('oops')
+      query(sql + ' LIMIT ' + size + ' OFFSET ' + (page - 1) * size, (err2: any, rows: any) => {
+        if (err2) return res.status(500).send('oops')
+        res.json({ rows, total: countRows[0].n, page, size })
+      })
+    })
+    return
+  }
+
   query(sql, (err: any, rows: any) => {
     if (err) return res.status(500).send('oops')
     res.json(rows)
