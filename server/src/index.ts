@@ -7,6 +7,7 @@ import stayRoutes from './routes/stays'
 import billingRoutes from './routes/billing'
 import ravenRoutes from './routes/raven'
 import reportRoutes from './routes/reports'
+import tournamentRoutes from './routes/tournament'
 import { startRavenLoop } from './lib/ravenPost'
 
 const app = express()
@@ -23,6 +24,7 @@ app.use('/api/stays', stayRoutes)
 app.use('/api/billing', billingRoutes)
 app.use('/api/ravens', ravenRoutes)
 app.use('/api/reports', reportRoutes)
+app.use('/api/arena', tournamentRoutes)
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {

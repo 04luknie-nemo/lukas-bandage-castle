@@ -95,3 +95,15 @@ CREATE TABLE IF NOT EXISTS tbl_password_reset (
   token VARCHAR(64) NOT NULL,
   expires_at DATETIME NOT NULL
 );
+
+-- monster arena (friendly contests only!!)
+CREATE TABLE IF NOT EXISTS tbl_tournament_match (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  monster_a_id INT NOT NULL,
+  monster_b_id INT NOT NULL,
+  contest VARCHAR(32) DEFAULT 'ROAR',
+  scheduled_at DATETIME,
+  winner_id INT NULL,
+  score_a INT NULL,
+  score_b INT NULL
+);
