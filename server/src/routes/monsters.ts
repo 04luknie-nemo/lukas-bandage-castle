@@ -7,7 +7,11 @@ const router = express.Router()
 
 router.get('/', checkAuth, (req: any, res) => {
   let sql = 'SELECT * FROM tbl_monster'
-  if (req.query.search) {
+  if (req.query.mine) {
+    sql += ' WHERE owner_id IN (SELECT id FROM tbl_customer WHERE user_id = ' + Number(req.user.id) + ')'
+  } else if (req.user.role === 'OWNER') {
+    return res.status(403).json({ error: 'owners can only list their own monsters' })
+  } else if (req.query.search) {
     sql += " WHERE name LIKE '%" + req.query.search + "%' OR species LIKE '%" + req.query.search + "%'"
   }
   sql += ' ORDER BY name'

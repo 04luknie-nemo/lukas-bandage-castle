@@ -13,21 +13,43 @@ import NewStayPage from './pages/NewStayPage'
 import InvoiceListPage from './pages/InvoiceListPage'
 import InvoiceDetailPage from './pages/InvoiceDetailPage'
 import ReportsPage from './pages/ReportsPage'
+import MyMonstersPage from './pages/MyMonstersPage'
+import MyInvoicesPage from './pages/MyInvoicesPage'
+
+function currentUser() {
+  try {
+    return JSON.parse(localStorage.getItem('user') || 'null')
+  } catch (e) {
+    return null
+  }
+}
 
 function Home() {
-  return <div className="page">welcome to the castle</div>
+  const user = currentUser()
+  return <div className="page">welcome to the castle{user ? ', ' + (user.name || user.email) : ''}</div>
 }
 
 export default function App() {
+  const user = currentUser()
+  const isOwner = user && user.role === 'OWNER'
   return (
     <div>
       <nav className="nav">
         <Link to="/">Home</Link>
-        <Link to="/monsters">Monsters</Link>
-        <Link to="/customers">Customers</Link>
-        <Link to="/stays">Stays</Link>
-        <Link to="/invoices">Invoices</Link>
-        <Link to="/reports">Reports</Link>
+        {isOwner ? (
+          <>
+            <Link to="/my/monsters">My monsters</Link>
+            <Link to="/my/invoices">My invoices</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/monsters">Monsters</Link>
+            <Link to="/customers">Customers</Link>
+            <Link to="/stays">Stays</Link>
+            <Link to="/invoices">Invoices</Link>
+            <Link to="/reports">Reports</Link>
+          </>
+        )}
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -44,6 +66,8 @@ export default function App() {
         <Route path="/invoices" element={<InvoiceListPage />} />
         <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/my/monsters" element={<MyMonstersPage />} />
+        <Route path="/my/invoices" element={<MyInvoicesPage />} />
       </Routes>
     </div>
   )

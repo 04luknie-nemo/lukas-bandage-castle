@@ -9,7 +9,10 @@ router.get('/invoices', checkAuth, (req: any, res) => {
   let sql =
     'SELECT i.*, c.first_name, c.last_name, c.title FROM tbl_invoice i JOIN tbl_customer c ON c.id = i.customer_id'
   const params: any[] = []
-  if (req.query.customer_id) {
+  if (req.query.mine || req.user.role === 'OWNER') {
+    sql += ' WHERE c.user_id = ?'
+    params.push(req.user.id)
+  } else if (req.query.customer_id) {
     sql += ' WHERE i.customer_id = ?'
     params.push(req.query.customer_id)
   }
