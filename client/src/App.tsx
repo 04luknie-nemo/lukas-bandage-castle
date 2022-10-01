@@ -5,6 +5,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import MonsterListPage from './pages/MonsterListPage'
 import MonsterDetailPage from './pages/MonsterDetailPage'
+import MonsterFormPage from './pages/MonsterFormPage'
 import CustomerListPage from './pages/CustomerListPage'
 import CustomerDetailPage from './pages/CustomerDetailPage'
 import StayListPage from './pages/StayListPage'
@@ -57,7 +58,9 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/monsters" element={<MonsterListPage />} />
+        <Route path="/monsters/new" element={<MonsterFormPage />} />
         <Route path="/monsters/:id" element={<MonsterDetailPage />} />
+        <Route path="/monsters/:id/edit" element={<MonsterFormPage />} />
         <Route path="/customers" element={<CustomerListPage />} />
         <Route path="/customers/:id" element={<CustomerDetailPage />} />
         <Route path="/stays" element={<StayListPage />} />

@@ -29,6 +29,7 @@ export default function MonsterDetailPage() {
           </p>
           <p>Status: {monster.status}</p>
           <p>Temperament: {monster.temperament}</p>
+          <Link to={'/monsters/' + monster.id + '/edit'}>edit</Link>
         </div>
       </div>
       <h3>Quirks</h3>
