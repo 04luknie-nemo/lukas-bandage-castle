@@ -2,6 +2,7 @@ import express from 'express'
 import { query } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
 import { ageInYears } from '../lib/dates'
+import { placeholderSvg } from '../lib/placeholder'
 
 const router = express.Router()
 
@@ -34,6 +35,17 @@ router.get('/', checkAuth, (req: any, res) => {
   query(sql, (err: any, rows: any) => {
     if (err) return res.status(500).send('oops')
     res.json(rows)
+  })
+})
+
+// no auth, img tags cant send the token
+router.get('/:id/photo', (req: any, res) => {
+  query('SELECT name, species, photo_url FROM tbl_monster WHERE id = ?', [req.params.id], (err: any, rows: any) => {
+    if (err || !rows[0]) return res.status(404).send('no')
+    if (rows[0].photo_url) return res.redirect(rows[0].photo_url)
+    res.setHeader('Content-Type', 'image/svg+xml')
+    res.setHeader('Cache-Control', 'public, max-age=3600')
+    res.send(placeholderSvg(rows[0].name, rows[0].species))
   })
 })
 

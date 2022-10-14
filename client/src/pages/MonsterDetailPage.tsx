@@ -21,7 +21,7 @@ export default function MonsterDetailPage() {
   return (
     <div className="page monster">
       <div className="monster-header">
-        <img src={monster.photo_url || '/placeholder-monster.png'} alt={monster.name} width={160} />
+        <img src={'/api/monsters/' + monster.id + '/photo'} alt={monster.name} width={160} />
         <div>
           <h2>{monster.name}</h2>
           <p>

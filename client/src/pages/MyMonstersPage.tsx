@@ -20,7 +20,7 @@ export default class MyMonstersPage extends React.Component<any, State> {
         <div className="cards">
           {this.state.monsters.map((m) => (
             <div className="card" key={m.id}>
-              <img src={m.photo_url || '/placeholder-monster.png'} alt={m.name} width={120} />
+              <img src={'/api/monsters/' + m.id + '/photo'} alt={m.name} width={120} />
               <h3>
                 <Link to={'/monsters/' + m.id}>{m.name}</Link>
               </h3>
