@@ -78,3 +78,10 @@ body {
 .pager span {
   margin: 0 10px;
 }
+.nav-user {
+  float: right;
+  color: #f4efe6;
+}
+.nav-user button {
+  margin-left: 8px;
+}

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
+import { getToken, setToken } from './api'
 import LoginPage from './pages/LoginPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -30,12 +31,31 @@ function Home() {
   return <div className="page">welcome to the castle{user ? ', ' + (user.name || user.email) : ''}</div>
 }
 
+function logout() {
+  setToken(null)
+  localStorage.removeItem('user')
+  window.location.href = '/login'
+}
+
+const PUBLIC_PATHS = ['/login', '/forgot-password', '/reset-password']
+
 export default function App() {
   const user = currentUser()
   const isOwner = user && user.role === 'OWNER'
+  const location = useLocation()
+
+  if (!getToken() && !PUBLIC_PATHS.includes(location.pathname)) {
+    return <Navigate to="/login" />
+  }
+
   return (
     <div>
       <nav className="nav">
+        {user && (
+          <span className="nav-user">
+            {user.name || user.email} <button onClick={logout}>log out</button>
+          </span>
+        )}
         <Link to="/">Home</Link>
         {isOwner ? (
           <>
