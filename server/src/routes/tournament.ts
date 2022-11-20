@@ -1,3 +1,6 @@
+// ON HOLD (nov 2022) - Lady Grimsby pulled the funding after the "riddle incident".
+// leaving it here, she might change her mind. -gorm
+
 import express from 'express'
 import { query, q } from '../db'
 import { checkAuth } from '../middleware/checkAuth'

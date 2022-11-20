@@ -24,7 +24,7 @@ app.use('/api/stays', stayRoutes)
 app.use('/api/billing', billingRoutes)
 app.use('/api/ravens', ravenRoutes)
 app.use('/api/reports', reportRoutes)
-app.use('/api/arena', tournamentRoutes)
+app.use("/api/arena", tournamentRoutes) // on hold, see routes/tournament.ts
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
