@@ -28,6 +28,7 @@ export default class CustomerListPage extends React.Component<any, State> {
     return (
       <div className="page">
         <h2>Customers</h2>
+        <Link to="/customers/new">+ New customer</Link>
         <input placeholder="search..." value={this.state.q} onChange={this.onSearch} />
         {this.state.loading ? (
           <p>loading...</p>
