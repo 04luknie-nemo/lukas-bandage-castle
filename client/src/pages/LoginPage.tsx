@@ -12,7 +12,7 @@ export default class LoginPage extends React.Component<any, State> {
       const data = await apiFetch('/auth/login', { method: 'POST', body: { email: this.state.email, password: this.state.password } })
       setToken(data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
-      window.location.href = '/'
+      window.location.href = data.user.role === 'OWNER' ? '/my/monsters' : '/'
     } catch (err: any) {
       this.setState({ error: err.message })
     }

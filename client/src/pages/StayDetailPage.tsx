@@ -16,7 +16,8 @@ export default function StayDetailPage() {
   const act = async (action: string) => {
     try {
       await apiFetch('/stays/' + id + '/' + action, { method: 'POST' })
-      setMsg('done')
+      const r = await apiFetch('/stays/' + id, {})
+      setMsg(action == 'checkout' ? 'checked out, invoice created' : 'done')
       load()
     } catch (e: any) {
       setMsg(e.message)
