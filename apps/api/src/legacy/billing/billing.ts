@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { q } from '../db'
-import { sendRaven } from './ravenPost'
+import { sendRaven } from '../ravenPost/ravenPost'
 import { formatGold } from './money'
 
 export function nights(start: any, end: any) {

@@ -1,8 +1,8 @@
 import express from 'express'
 import { query, q } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
-import { createInvoiceForStay } from '../lib/billing'
-import { sendRaven } from '../lib/ravenPost'
+import { createInvoiceForStay } from '../billing/billing'
+import { sendRaven } from '../ravenPost/ravenPost'
 
 const router = express.Router()
 

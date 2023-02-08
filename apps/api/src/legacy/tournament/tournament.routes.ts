@@ -4,7 +4,7 @@
 import express from 'express'
 import { query, q } from '../db'
 import { checkAuth } from '../middleware/checkAuth'
-import { CONTESTS, makeBracket, runContest } from '../arena/contests'
+import { CONTESTS, makeBracket, runContest } from './contests'
 
 const router = express.Router()
 

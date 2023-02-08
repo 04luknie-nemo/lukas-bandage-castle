@@ -1,7 +1,7 @@
 import express from 'express'
 import { query, q } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
-import { createInvoiceForStay } from '../lib/billing'
+import { createInvoiceForStay } from './billing'
 
 const router = express.Router()
 

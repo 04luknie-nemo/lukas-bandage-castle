@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const mysql = require('mysql2')
 
-const sql = fs.readFileSync(path.join(__dirname, '../db/schema.sql'), 'utf8')
+const sql = fs.readFileSync(path.join(__dirname, '../src/legacy/db/schema.sql'), 'utf8')
 const conn = mysql.createConnection({ uri: process.env.DATABASE_URL, multipleStatements: true })
 
 conn.query(sql, (err) => {

@@ -1,33 +1,10 @@
-import express from 'express'
-require('dotenv').config()
-import authRoutes from './routes/auth'
-import monsterRoutes from './routes/monsters'
-import customerRoutes from './routes/customers'
-import stayRoutes from './routes/stays'
-import billingRoutes from './routes/billing'
-import ravenRoutes from './routes/raven'
-import reportRoutes from './routes/reports'
-import tournamentRoutes from './routes/tournament'
-import { startRavenLoop } from './lib/ravenPost'
+import 'dotenv/config'
+import { createApp } from './app'
+import { startRavenLoop } from './legacy'
 
-const app = express()
-app.use(express.json())
+const port = Number(process.env.PORT) || 3001
 
-app.get('/api/health', (req, res) => {
-  res.json({ ok: true })
-})
-
-app.use('/api/auth', authRoutes)
-app.use('/api/monsters', monsterRoutes)
-app.use('/api/customers', customerRoutes)
-app.use('/api/stays', stayRoutes)
-app.use('/api/billing', billingRoutes)
-app.use('/api/ravens', ravenRoutes)
-app.use('/api/reports', reportRoutes)
-app.use("/api/arena", tournamentRoutes) // on hold, see routes/tournament.ts
-
-const port = process.env.PORT || 3001
-app.listen(port, () => {
-  console.log('listening on ' + port)
+createApp().listen(port, () => {
+  console.log(`Bandage Castle API listening on http://localhost:${port}`)
   startRavenLoop()
 })

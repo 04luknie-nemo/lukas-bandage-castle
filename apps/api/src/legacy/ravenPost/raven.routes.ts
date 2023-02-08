@@ -1,7 +1,7 @@
 import express from 'express'
 import { query } from '../db'
 import { checkAuth } from '../middleware/checkAuth'
-import { sendRaven } from '../lib/ravenPost'
+import { sendRaven } from './ravenPost'
 
 const router = express.Router()
 

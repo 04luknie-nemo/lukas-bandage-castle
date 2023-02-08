@@ -2,7 +2,7 @@ import express from 'express'
 import { query } from '../db'
 import { checkAuth, staffOnly } from '../middleware/checkAuth'
 import { ageInYears } from '../lib/dates'
-import { placeholderSvg } from '../lib/placeholder'
+import { placeholderSvg } from './placeholder'
 
 const router = express.Router()
 
