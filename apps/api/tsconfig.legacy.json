@@ -1,0 +1,15 @@
+{
+  // Loose settings for the pre-2023 code in src/legacy.
+  // Do NOT use this for anything new. -- Priya
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": false,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["src/legacy/**"]
+}
