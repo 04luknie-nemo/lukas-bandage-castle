@@ -8,12 +8,22 @@
   "scripts": {
     "dev": "concurrently -n api,web -c yellow,cyan \"npm run dev -w apps/api\" \"npm run dev -w apps/web\"",
     "build": "npm run build --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:generate": "prisma generate"
   },
   "devDependencies": {
-    "concurrently": "^7.6.0"
+    "concurrently": "^7.6.0",
+    "prisma": "^4.10.1"
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.10.1"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }

@@ -1,0 +1,190 @@
+// Bandage Castle database schema 🏰
+//
+// The tbl_* tables predate Prisma (2022). Models map onto them with
+// @@map / @map so the code can use camelCase. New tables are snake_case
+// and plural.
+//
+// relationMode = "prisma": the legacy tables never had foreign keys, and
+// adding them would mean cleaning up years of orphaned rows first.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// ---------------------------------------------------------------------------
+// Legacy tables (2022)
+// ---------------------------------------------------------------------------
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique @db.VarChar(191)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  /// Legacy single role from 2022. Values: ADMIN, STAFF, OWNER.
+  role         String    @default("STAFF") @db.VarChar(32)
+  displayName  String?   @map("display_name") @db.VarChar(191)
+  createdAt    DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+
+  customer Customer?
+
+  @@map("tbl_user")
+}
+
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  token     String   @db.VarChar(64)
+  expiresAt DateTime @map("expires_at") @db.DateTime(0)
+
+  @@index([token])
+  @@map("tbl_password_reset")
+}
+
+model Customer {
+  id          Int       @id @default(autoincrement())
+  userId      Int?      @unique @map("user_id")
+  title       String?   @db.VarChar(64)
+  firstName   String?   @map("first_name") @db.VarChar(100)
+  lastName    String?   @map("last_name") @db.VarChar(100)
+  email       String?   @db.VarChar(191)
+  /// raven | crystal ball | email
+  contactPref String?   @default("raven") @map("contact_pref") @db.VarChar(32)
+  lairAddress String?   @map("lair_address") @db.Text
+  notes       String?   @db.Text
+  createdAt   DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+
+  user     User?     @relation(fields: [userId], references: [id])
+  monsters Monster[]
+  stays    Stay[]
+  invoices Invoice[]
+
+  @@map("tbl_customer")
+}
+
+model Monster {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  /// Free-text species from 2022.
+  species     String?   @db.VarChar(100)
+  ownerId     Int?      @map("owner_id")
+  birthDate   DateTime? @map("birth_date") @db.Date
+  temperament String?   @db.VarChar(100)
+  quirks      String?   @db.Text
+  history     String?   @db.Text
+  photoUrl    String?   @map("photo_url") @db.VarChar(255)
+  /// IN_RESIDENCE | HOME | AVAILABLE | HIRED | RETIRED
+  status      String?   @default("IN_RESIDENCE") @db.VarChar(32)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+
+  owner Customer? @relation(fields: [ownerId], references: [id])
+  stays Stay[]
+
+  @@index([ownerId])
+  @@map("tbl_monster")
+}
+
+model Stay {
+  id             Int       @id @default(autoincrement())
+  monsterId      Int       @map("monster_id")
+  customerId     Int       @map("customer_id")
+  /// BOARDING | TREATMENT | THERAPY | SURRENDER
+  reason         String    @db.VarChar(32)
+  /// BOOKED | CHECKED_IN | CHECKED_OUT | CANCELLED
+  status         String?   @default("BOOKED") @db.VarChar(32)
+  startDate      DateTime? @map("start_date") @db.Date
+  expectedPickup DateTime? @map("expected_pickup") @db.Date
+  checkedInAt    DateTime? @map("checked_in_at") @db.DateTime(0)
+  checkedOutAt   DateTime? @map("checked_out_at") @db.DateTime(0)
+  dailyRate      Decimal?  @default(10.00) @map("daily_rate") @db.Decimal(10, 2)
+  notes          String?   @db.Text
+
+  monster  Monster   @relation(fields: [monsterId], references: [id])
+  customer Customer  @relation(fields: [customerId], references: [id])
+  invoices Invoice[]
+
+  @@index([monsterId])
+  @@index([customerId])
+  @@map("tbl_stay")
+}
+
+model Invoice {
+  id         Int       @id @default(autoincrement())
+  stayId     Int?      @map("stay_id")
+  customerId Int       @map("customer_id")
+  issuedAt   DateTime? @default(now()) @map("issued_at") @db.DateTime(0)
+  dueDate    DateTime? @map("due_date") @db.Date
+  total      Decimal?  @default(0.00) @db.Decimal(10, 2)
+  /// UNPAID | PAID | VOID
+  status     String?   @default("UNPAID") @db.VarChar(16)
+
+  stay     Stay?         @relation(fields: [stayId], references: [id])
+  customer Customer      @relation(fields: [customerId], references: [id])
+  lines    InvoiceLine[]
+  payments Payment[]
+
+  @@index([stayId])
+  @@index([customerId])
+  @@map("tbl_invoice")
+}
+
+model InvoiceLine {
+  id          Int      @id @default(autoincrement())
+  invoiceId   Int      @map("invoice_id")
+  description String?  @db.VarChar(255)
+  qty         Int?     @default(1)
+  unitPrice   Decimal? @map("unit_price") @db.Decimal(10, 2)
+  amount      Decimal? @db.Decimal(10, 2)
+  /// STAY | TREATMENT | LATE_FEE | OTHER
+  kind        String?  @default("OTHER") @db.VarChar(16)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@index([invoiceId])
+  @@map("tbl_invoice_line")
+}
+
+model Payment {
+  id        Int       @id @default(autoincrement())
+  invoiceId Int       @map("invoice_id")
+  amount    Decimal?  @db.Decimal(10, 2)
+  /// GOLD | GEMS | IOU
+  method    String?   @default("GOLD") @db.VarChar(16)
+  paidAt    DateTime? @default(now()) @map("paid_at") @db.DateTime(0)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@index([invoiceId])
+  @@map("tbl_payment")
+}
+
+model Raven {
+  id         Int       @id @default(autoincrement())
+  customerId Int       @map("customer_id")
+  subject    String?   @db.VarChar(255)
+  body       String?   @db.Text
+  status     String?   @default("QUEUED") @db.VarChar(16)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+  sentAt     DateTime? @map("sent_at") @db.DateTime(0)
+
+  @@index([status])
+  @@map("tbl_raven")
+}
+
+/// Monster Arena (on hold since Nov 2022).
+model TournamentMatch {
+  id          Int       @id @default(autoincrement())
+  monsterAId  Int       @map("monster_a_id")
+  monsterBId  Int       @map("monster_b_id")
+  contest     String?   @default("ROAR") @db.VarChar(32)
+  scheduledAt DateTime? @map("scheduled_at") @db.DateTime(0)
+  winnerId    Int?      @map("winner_id")
+  scoreA      Int?      @map("score_a")
+  scoreB      Int?      @map("score_b")
+
+  @@map("tbl_tournament_match")
+}
