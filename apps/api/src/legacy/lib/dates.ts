@@ -1,9 +1,7 @@
 import moment from 'moment'
 
-export function ageInYears(birthDate: any) {
-  if (!birthDate) return null
-  return new Date().getFullYear() - new Date(birthDate).getFullYear()
-}
+// ageInYears moved to @bandage/shared
+export { ageInYears } from '@bandage/shared'
 
 export function fmtDate(d: any) {
   if (!d) return ''
