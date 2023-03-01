@@ -1,5 +1,5 @@
 import React from 'react'
-import { apiFetch, getToken } from '../api'
+import { apiFetch } from '../api'
 import { formatGold } from '../money'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -20,7 +20,7 @@ export default class ReportsPage extends React.Component<any, State> {
   }
 
   downloadCsv = async () => {
-    const res = await fetch('/api/reports/revenue.csv', { headers: { Authorization: 'Bearer ' + getToken() } })
+    const res = await fetch('/api/reports/revenue.csv', { credentials: 'include' })
     const blob = await res.blob()
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)

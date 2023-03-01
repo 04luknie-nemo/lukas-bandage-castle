@@ -31,6 +31,7 @@ model User {
   createdAt    DateTime? @default(now()) @map("created_at") @db.DateTime(0)
 
   customer Customer?
+  roles    UserRole[]
 
   @@map("tbl_user")
 }
@@ -187,4 +188,20 @@ model TournamentMatch {
   scoreB      Int?      @map("score_b")
 
   @@map("tbl_tournament_match")
+}
+
+// ---------------------------------------------------------------------------
+// 2023+
+// ---------------------------------------------------------------------------
+
+/// A user can hold several roles (e.g. OWNER + OVERLORD). Replaces tbl_user.role.
+model UserRole {
+  userId    Int      @map("user_id")
+  role      String   @db.VarChar(32)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, role])
+  @@map("user_roles")
 }

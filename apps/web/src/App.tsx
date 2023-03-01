@@ -1,6 +1,7 @@
-import React from 'react'
-import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import { getToken, setToken } from './api'
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import { RequireAuth } from './auth/RequireAuth'
+import { useAuth } from './auth/AuthProvider'
 import LoginPage from './pages/LoginPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -19,65 +20,25 @@ import ReportsPage from './pages/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
 import MyInvoicesPage from './pages/MyInvoicesPage'
 
-function currentUser() {
-  try {
-    return JSON.parse(localStorage.getItem('user') || 'null')
-  } catch (e) {
-    return null
-  }
-}
-
 function Home() {
-  const user = currentUser()
-  return <div className="page">welcome to the castle{user ? ', ' + (user.name || user.email) : ''}</div>
+  const { user } = useAuth()
+  return <div className="page">Welcome to the castle, {user?.name || user?.email} 🏰</div>
 }
-
-function logout() {
-  setToken(null)
-  localStorage.removeItem('user')
-  window.location.href = '/login'
-}
-
-const PUBLIC_PATHS = ['/login', '/forgot-password', '/reset-password']
 
 export default function App() {
-  const user = currentUser()
-  const isOwner = user && user.role === 'OWNER'
-  const location = useLocation()
-
-  if (!getToken() && !PUBLIC_PATHS.includes(location.pathname)) {
-    return <Navigate to="/login" />
-  }
-
   return (
-    <div>
-      <nav className="nav">
-        {user && (
-          <span className="nav-user">
-            {user.name || user.email} <button onClick={logout}>log out</button>
-          </span>
-        )}
-        <Link to="/">Home</Link>
-        {isOwner ? (
-          <>
-            <Link to="/my/monsters">My monsters</Link>
-            <Link to="/my/invoices">My invoices</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/monsters">Monsters</Link>
-            <Link to="/customers">Customers</Link>
-            <Link to="/stays">Stays</Link>
-            <Link to="/invoices">Invoices</Link>
-            <Link to="/reports">Reports</Link>
-          </>
-        )}
-      </nav>
-      <Routes>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route
+        element={
+          <RequireAuth>
+            <Layout />
+          </RequireAuth>
+        }
+      >
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/monsters" element={<MonsterListPage />} />
         <Route path="/monsters/new" element={<MonsterFormPage />} />
         <Route path="/monsters/:id" element={<MonsterDetailPage />} />
@@ -93,7 +54,7 @@ export default function App() {
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
-      </Routes>
-    </div>
+      </Route>
+    </Routes>
   )
 }

@@ -1,25 +1,16 @@
-import jwt from 'jsonwebtoken'
+// Legacy auth middleware. New code: use authenticate + requireRole from src/middleware/requireRole.ts
+import { isStaff } from '@bandage/shared'
 
-const SECRET = process.env.JWT_SECRET || 'dev-secret-change-me'
-
-export function signToken(user: any) {
-  return jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET, { expiresIn: '7d' })
-}
-
+// Since 2023-03 the session is a cookie and `authenticate` (run for every
+// request in app.ts) has already loaded req.user. This just keeps the old
+// shape that legacy routes expect: req.user.role.
 export function checkAuth(req: any, res: any, next: any) {
-  const header = req.headers.authorization
-  if (!header) return res.status(401).json({ error: 'not logged in' })
-  const token = header.replace('Bearer ', '')
-  try {
-    const decoded: any = jwt.verify(token, SECRET)
-    req.user = decoded
-    next()
-  } catch (e) {
-    return res.status(401).json({ error: 'bad token' })
-  }
+  if (!req.user) return res.status(401).json({ error: 'not logged in' })
+  if (!req.user.role) req.user.role = req.user.roles.includes('ADMIN') ? 'ADMIN' : req.user.roles[0]
+  next()
 }
 
 export function staffOnly(req: any, res: any, next: any) {
-  if (req.user.role === 'STAFF' || req.user.role === 'ADMIN') return next()
+  if (isStaff(req.user)) return next()
   return res.status(403).json({ error: 'staff only' })
 }

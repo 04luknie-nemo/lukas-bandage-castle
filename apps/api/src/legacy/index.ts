@@ -2,7 +2,6 @@
 // New modules go in src/modules and must not import from here
 // (see docs/CONVENTIONS.md).
 import { Router } from 'express'
-import authRoutes from './auth/auth.routes'
 import monsterRoutes from './monsters/monsters.routes'
 import customerRoutes from './customers/customers.routes'
 import stayRoutes from './stays/stays.routes'
@@ -13,7 +12,6 @@ import tournamentRoutes from './tournament/tournament.routes'
 
 export const legacyRouter = Router()
 
-legacyRouter.use('/auth', authRoutes)
 legacyRouter.use('/monsters', monsterRoutes)
 legacyRouter.use('/customers', customerRoutes)
 legacyRouter.use('/stays', stayRoutes)
