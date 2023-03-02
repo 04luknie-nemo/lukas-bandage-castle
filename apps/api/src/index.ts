@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import './env'
 import { createApp } from './app'
 import { startRavenLoop } from './legacy'
 
