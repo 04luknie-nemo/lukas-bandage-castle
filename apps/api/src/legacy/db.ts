@@ -10,7 +10,7 @@ const pool = mysql.createPool({
 export const promisePool = pool.promise()
 
 // callback style, used by old routes
-export function query(sql, params, cb) {
+export function query(sql, params?, cb?) {
   if (typeof params === 'function') {
     cb = params
     params = []
