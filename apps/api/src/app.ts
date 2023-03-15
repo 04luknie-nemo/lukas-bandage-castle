@@ -4,6 +4,7 @@ import { legacyRouter } from './legacy'
 import { authenticate } from './middleware/requireRole'
 import { errorHandler } from './middleware/errorHandler'
 import { authRouter } from './modules/auth/auth.routes'
+import { usersRouter } from './modules/users/users.routes'
 
 export function createApp() {
   const app = express()
@@ -17,6 +18,7 @@ export function createApp() {
 
   // modules
   app.use('/api/auth', authRouter)
+  app.use('/api/users', usersRouter)
 
   // pre-2023 routes
   app.use('/api', legacyRouter)

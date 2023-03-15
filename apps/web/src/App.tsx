@@ -19,6 +19,7 @@ import InvoiceDetailPage from './pages/InvoiceDetailPage'
 import ReportsPage from './pages/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
 import MyInvoicesPage from './pages/MyInvoicesPage'
+import UsersPage from './pages/admin/UsersPage'
 
 function Home() {
   const { user } = useAuth()
@@ -54,6 +55,14 @@ export default function App() {
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
+        <Route
+          path="/admin/users"
+          element={
+            <RequireAuth roles={['ADMIN']}>
+              <UsersPage />
+            </RequireAuth>
+          }
+        />
       </Route>
     </Routes>
   )

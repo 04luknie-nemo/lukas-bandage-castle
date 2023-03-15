@@ -85,3 +85,24 @@ body {
 .nav-user button {
   margin-left: 8px;
 }
+.roles label {
+  margin-right: 10px;
+  font-weight: normal;
+  display: inline;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #e8dcc6;
+}
+.badge-warn {
+  background: #f7d38b;
+}
+.badge-danger {
+  background: #f2a7a0;
+}
+.badge-ok {
+  background: #b9e3b0;
+}
