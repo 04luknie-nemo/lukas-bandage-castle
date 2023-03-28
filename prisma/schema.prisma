@@ -70,8 +70,9 @@ model Customer {
 model Monster {
   id          Int       @id @default(autoincrement())
   name        String    @db.VarChar(100)
-  /// Free-text species from 2022.
-  species     String?   @db.VarChar(100)
+  /// Free-text species from 2022. Use speciesId / species for new code.
+  speciesName String?   @map("species") @db.VarChar(100)
+  speciesId   Int?      @map("species_id")
   ownerId     Int?      @map("owner_id")
   birthDate   DateTime? @map("birth_date") @db.Date
   temperament String?   @db.VarChar(100)
@@ -82,10 +83,12 @@ model Monster {
   status      String?   @default("IN_RESIDENCE") @db.VarChar(32)
   createdAt   DateTime? @default(now()) @map("created_at") @db.DateTime(0)
 
-  owner Customer? @relation(fields: [ownerId], references: [id])
-  stays Stay[]
+  owner   Customer? @relation(fields: [ownerId], references: [id])
+  species Species?  @relation(fields: [speciesId], references: [id])
+  stays   Stay[]
 
   @@index([ownerId])
+  @@index([speciesId])
   @@map("tbl_monster")
 }
 
@@ -204,4 +207,50 @@ model UserRole {
 
   @@id([userId, role])
   @@map("user_roles")
+}
+
+model Species {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique @db.VarChar(100)
+  slug          String   @unique @db.VarChar(100)
+  description   String?  @db.Text
+  /// Human-readable, e.g. "Goats, turnips, the occasional lost knight's packed lunch"
+  diet          String   @db.VarChar(255)
+  /// CARNIVORE | HERBIVORE | OMNIVORE | MINERAL | ETHEREAL
+  dietType      String   @map("diet_type") @db.VarChar(32)
+  mealsPerDay   Int      @default(2) @map("meals_per_day")
+  portionKg     Decimal  @default(1.00) @map("portion_kg") @db.Decimal(6, 2)
+  /// 1 (cuddly) .. 5 (do not make eye contact)
+  dangerLevel   Int      @map("danger_level")
+  tempMinC      Int      @map("temp_min_c")
+  tempMaxC      Int      @map("temp_max_c")
+  humidityMin   Int      @map("humidity_min")
+  humidityMax   Int      @map("humidity_max")
+  /// 0 = bright daylight, 100 = pitch black
+  darkness      Int
+  lifespanYears Int?     @map("lifespan_years")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  monsters         Monster[]
+  incompatibleWith SpeciesCompatibility[] @relation("ruleFrom")
+  incompatibleFrom SpeciesCompatibility[] @relation("ruleTo")
+
+  @@map("species")
+}
+
+/// "Never house <species> next to <incompatibleSpecies>."
+model SpeciesCompatibility {
+  id                    Int      @id @default(autoincrement())
+  speciesId             Int      @map("species_id")
+  incompatibleSpeciesId Int      @map("incompatible_species_id")
+  reason                String   @db.VarChar(255)
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  species             Species @relation("ruleFrom", fields: [speciesId], references: [id], onDelete: Cascade)
+  incompatibleSpecies Species @relation("ruleTo", fields: [incompatibleSpeciesId], references: [id], onDelete: Cascade)
+
+  @@unique([speciesId, incompatibleSpeciesId])
+  @@index([incompatibleSpeciesId])
+  @@map("species_compatibility")
 }

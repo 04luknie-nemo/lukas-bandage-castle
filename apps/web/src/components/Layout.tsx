@@ -21,6 +21,7 @@ export default function Layout() {
           </span>
         )}
         <Link to="/">Home</Link>
+        <Link to="/species">Species</Link>
         {staff && (
           <>
             <Link to="/monsters">Monsters</Link>

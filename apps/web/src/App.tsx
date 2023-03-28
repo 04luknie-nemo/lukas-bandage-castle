@@ -20,6 +20,8 @@ import ReportsPage from './pages/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
 import MyInvoicesPage from './pages/MyInvoicesPage'
 import UsersPage from './pages/admin/UsersPage'
+import SpeciesListPage from './pages/species/SpeciesListPage'
+import SpeciesDetailPage from './pages/species/SpeciesDetailPage'
 
 function Home() {
   const { user } = useAuth()
@@ -53,6 +55,8 @@ export default function App() {
         <Route path="/invoices" element={<InvoiceListPage />} />
         <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/species" element={<SpeciesListPage />} />
+        <Route path="/species/:slug" element={<SpeciesDetailPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route
