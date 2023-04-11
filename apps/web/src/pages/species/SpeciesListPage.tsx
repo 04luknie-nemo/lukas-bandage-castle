@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
 import type { Species } from '../../types/species'
@@ -5,16 +6,20 @@ import DangerLevel from './DangerLevel'
 
 export default function SpeciesListPage() {
   const { data: species, loading, error } = useApi<Species[]>('/species')
+  const [query, setQuery] = useState('')
 
   if (error) return <p className="page error">{error.message}</p>
   if (loading || !species) return <p className="page">Opening the compendium... 📖</p>
+
+  const filtered = query ? species.filter((s) => s.name.includes(query) || s.diet.includes(query)) : species
 
   return (
     <div className="page">
       <h2>📖 Species Compendium</h2>
       <p className="muted">{species.length} species known to the castle.</p>
+      <input className="search" placeholder="Search species..." value={query} onChange={(e) => setQuery(e.target.value)} />
       <div className="cards">
-        {species.map((s) => (
+        {filtered.map((s) => (
           <Link to={`/species/${s.slug}`} className="card species-card" key={s.id}>
             <h3>{s.name}</h3>
             <DangerLevel level={s.dangerLevel} />

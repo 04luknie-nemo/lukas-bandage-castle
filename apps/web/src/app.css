@@ -142,3 +142,8 @@ button.link {
   text-decoration: underline;
   padding: 0;
 }
+.search {
+  width: 300px;
+  padding: 6px;
+  margin-bottom: 12px;
+}
