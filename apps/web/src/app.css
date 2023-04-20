@@ -147,3 +147,36 @@ button.link {
   padding: 6px;
   margin-bottom: 12px;
 }
+.lair-card {
+  color: inherit;
+  text-decoration: none;
+}
+.lair-card.inactive {
+  opacity: 0.6;
+}
+.occupancy {
+  position: relative;
+  height: 16px;
+  background: #eee3cf;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+.occupancy-fill {
+  height: 100%;
+}
+.occupancy-fill.ok {
+  background: #8cc084;
+}
+.occupancy-fill.busy {
+  background: #e3b75b;
+}
+.occupancy-fill.full {
+  background: #d9776c;
+}
+.occupancy span {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  font-size: 11px;
+}
