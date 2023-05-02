@@ -7,6 +7,7 @@ import { authRouter } from './modules/auth/auth.routes'
 import { usersRouter } from './modules/users/users.routes'
 import { speciesRouter } from './modules/species/species.routes'
 import { lairsRouter } from './modules/lairs/lairs.routes'
+import { intakeRouter } from './modules/intake/intake.routes'
 
 export function createApp() {
   const app = express()
@@ -23,6 +24,7 @@ export function createApp() {
   app.use('/api/users', usersRouter)
   app.use('/api/species', speciesRouter)
   app.use('/api/lairs', lairsRouter)
+  app.use('/api/intake', intakeRouter)
 
   // pre-2023 routes
   app.use('/api', legacyRouter)

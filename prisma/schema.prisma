@@ -292,3 +292,20 @@ model LairAssignment {
   @@index([monsterId])
   @@map("lair_assignments")
 }
+
+model IntakeForm {
+  id                 Int      @id @default(autoincrement())
+  stayId             Int      @unique @map("stay_id")
+  monsterId          Int      @map("monster_id")
+  /// EXCELLENT | GOOD | FAIR | POOR | CRITICAL
+  conditionOnArrival String   @map("condition_on_arrival") @db.VarChar(16)
+  weightKg           Decimal? @map("weight_kg") @db.Decimal(8, 2)
+  injuries           String?  @db.Text
+  behaviourNotes     String?  @map("behaviour_notes") @db.Text
+  belongings         String?  @db.Text
+  receivedById       Int      @map("received_by_id")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  @@index([monsterId])
+  @@map("intake_forms")
+}

@@ -180,3 +180,21 @@ button.link {
   left: 6px;
   font-size: 11px;
 }
+.arrivals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 16px;
+}
+.arrival {
+  text-align: left;
+  background: white;
+  border: 1px solid #d6c9b0;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+}
+.arrival.selected {
+  border-color: #3b2a1a;
+  background: #fff8ea;
+}
