@@ -25,6 +25,8 @@ import SpeciesDetailPage from './pages/species/SpeciesDetailPage'
 import LairListPage from './pages/lairs/LairListPage'
 import LairDetailPage from './pages/lairs/LairDetailPage'
 import IntakePage from './pages/intake/IntakePage'
+import VetDashboardPage from './pages/medical/VetDashboardPage'
+import MonsterMedicalPage from './pages/medical/MonsterMedicalPage'
 
 function Home() {
   const { user } = useAuth()
@@ -63,6 +65,8 @@ export default function App() {
         <Route path="/lairs" element={<LairListPage />} />
         <Route path="/lairs/:id" element={<LairDetailPage />} />
         <Route path="/intake" element={<IntakePage />} />
+        <Route path="/vet" element={<VetDashboardPage />} />
+        <Route path="/monsters/:id/medical" element={<MonsterMedicalPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

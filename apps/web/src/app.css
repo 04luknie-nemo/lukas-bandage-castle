@@ -198,3 +198,37 @@ button.link {
   border-color: #3b2a1a;
   background: #fff8ea;
 }
+.split {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.patient-list {
+  list-style: none;
+  padding: 0;
+  min-width: 260px;
+}
+.patient {
+  width: 100%;
+  text-align: left;
+  background: white;
+  border: 1px solid #d6c9b0;
+  padding: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.patient.selected {
+  border-color: #3b2a1a;
+  background: #fff8ea;
+}
+.panel {
+  flex: 1;
+  background: white;
+  border: 1px solid #d6c9b0;
+  border-radius: 8px;
+  padding: 16px;
+}
+.card.wide {
+  width: auto;
+  margin-bottom: 12px;
+}

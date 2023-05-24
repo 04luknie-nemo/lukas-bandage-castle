@@ -88,6 +88,7 @@ model Monster {
   stays   Stay[]
 
   lairAssignments LairAssignment[]
+  medicalRecords  MedicalRecord[]
 
   @@index([ownerId])
   @@index([speciesId])
@@ -308,4 +309,38 @@ model IntakeForm {
 
   @@index([monsterId])
   @@map("intake_forms")
+}
+
+model MedicalRecord {
+  id        Int      @id @default(autoincrement())
+  monsterId Int      @map("monster_id")
+  vetId     Int      @map("vet_id")
+  visitDate DateTime @map("visit_date") @db.Date
+  summary   String   @db.VarChar(255)
+  diagnosis String?  @db.Text
+  notes     String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  monster    Monster     @relation(fields: [monsterId], references: [id])
+  treatments Treatment[]
+
+  @@index([monsterId])
+  @@map("medical_records")
+}
+
+model Treatment {
+  id        Int       @id @default(autoincrement())
+  recordId  Int       @map("record_id")
+  name      String    @db.VarChar(191)
+  /// PLANNED | ONGOING | COMPLETE
+  status    String    @default("PLANNED") @db.VarChar(16)
+  startedAt DateTime? @map("started_at") @db.Date
+  endedAt   DateTime? @map("ended_at") @db.Date
+  notes     String?   @db.Text
+
+  record MedicalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([recordId])
+  @@index([status])
+  @@map("treatments")
 }

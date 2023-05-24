@@ -39,6 +39,7 @@ export default function Layout() {
             <Link to="/my/invoices">My invoices</Link>
           </>
         )}
+        {hasRole(user, 'VET', 'ADMIN') && <Link to="/vet">Vet</Link>}
         {hasRole(user, 'ADMIN') && <Link to="/admin/users">Users</Link>}
       </nav>
       <Outlet />
