@@ -7,7 +7,19 @@ export type Treatment = {
   notes: string | null
 }
 
+export type Prescription = {
+  id: number
+  remedy: string
+  form: 'POTION' | 'SALVE' | 'TINCTURE' | 'POULTICE' | 'ELIXIR'
+  dosage: string
+  frequency: string
+  startDate: string
+  endDate: string | null
+  notes: string | null
+}
+
 export type MedicalRecord = {
+  prescriptions: Prescription[]
   id: number
   monsterId: number
   vetId: number

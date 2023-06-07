@@ -232,3 +232,6 @@ button.link {
   width: auto;
   margin-bottom: 12px;
 }
+.form.inline.wrap {
+  flex-wrap: wrap;
+}

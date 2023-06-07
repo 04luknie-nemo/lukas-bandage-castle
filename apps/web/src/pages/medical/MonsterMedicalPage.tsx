@@ -48,6 +48,50 @@ function AddTreatment({ recordId, onAdded }: { recordId: number; onAdded: () => 
   )
 }
 
+const FORM_ICONS: Record<string, string> = { POTION: '🧪', SALVE: '🫙', TINCTURE: '💧', POULTICE: '🩹', ELIXIR: '✨' }
+
+function AddPrescription({ recordId, onAdded }: { recordId: number; onAdded: () => void }) {
+  const [open, setOpen] = useState(false)
+  const [p, setP] = useState({ remedy: '', form: 'POTION', dosage: '', frequency: '', startDate: today(), endDate: '' })
+  const [error, setError] = useState('')
+
+  if (!open)
+    return (
+      <button className="link" onClick={() => setOpen(true)}>
+        + prescribe
+      </button>
+    )
+
+  const save = async (e: FormEvent) => {
+    e.preventDefault()
+    setError('')
+    try {
+      await apiFetch(`/medical/records/${recordId}/prescriptions`, { method: 'POST', body: { ...p, endDate: p.endDate || undefined } })
+      setOpen(false)
+      onAdded()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not save')
+    }
+  }
+
+  return (
+    <form className="form inline wrap" onSubmit={save}>
+      <input placeholder="remedy" value={p.remedy} onChange={(e) => setP({ ...p, remedy: e.target.value })} />
+      <select value={p.form} onChange={(e) => setP({ ...p, form: e.target.value })}>
+        {Object.keys(FORM_ICONS).map((f) => (
+          <option key={f}>{f}</option>
+        ))}
+      </select>
+      <input placeholder="dosage" value={p.dosage} onChange={(e) => setP({ ...p, dosage: e.target.value })} />
+      <input placeholder="frequency" value={p.frequency} onChange={(e) => setP({ ...p, frequency: e.target.value })} />
+      <input type="date" value={p.startDate} onChange={(e) => setP({ ...p, startDate: e.target.value })} />
+      <input type="date" value={p.endDate} onChange={(e) => setP({ ...p, endDate: e.target.value })} />
+      <button type="submit">Prescribe</button>
+      {error && <span className="error">{error}</span>}
+    </form>
+  )
+}
+
 export default function MonsterMedicalPage() {
   const { id } = useParams()
   const { user } = useAuth()
@@ -90,6 +134,22 @@ export default function MonsterMedicalPage() {
             ))}
           </ul>
           {isVet && <AddTreatment recordId={r.id} onAdded={reload} />}
+          {r.prescriptions.length > 0 && (
+            <>
+              <h5>🧪 Prescriptions</h5>
+              <ul>
+                {r.prescriptions.map((p) => (
+                  <li key={p.id}>
+                    {FORM_ICONS[p.form]} <b>{p.remedy}</b> — {p.dosage}, {p.frequency}{' '}
+                    <span className="muted">
+                      {p.startDate.slice(0, 10)} → {p.endDate ? p.endDate.slice(0, 10) : 'until further notice'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {isVet && <AddPrescription recordId={r.id} onAdded={reload} />}
         </div>
       ))}
 

@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { asyncHandler } from '../../middleware/asyncHandler'
 import { requireRole } from '../../middleware/requireRole'
 import { validate } from '../../middleware/validate'
-import { recordSchema, treatmentSchema, treatmentStatusSchema } from './medical.schema'
+import { prescriptionSchema, recordSchema, treatmentSchema, treatmentStatusSchema } from './medical.schema'
 import * as medicalService from './medical.service'
 
 export const medicalRouter = Router()
@@ -39,6 +39,23 @@ medicalRouter.post(
   validate(treatmentSchema),
   asyncHandler(async (req, res) => {
     res.status(201).json(await medicalService.addTreatment(Number(req.params.recordId), req.body))
+  }),
+)
+
+medicalRouter.post(
+  '/records/:recordId/prescriptions',
+  requireRole('VET'),
+  validate(prescriptionSchema),
+  asyncHandler(async (req, res) => {
+    res.status(201).json(await medicalService.addPrescription(Number(req.params.recordId), req.body))
+  }),
+)
+
+medicalRouter.get(
+  '/prescriptions/active',
+  requireRole('VET', 'KEEPER', 'ADMIN'),
+  asyncHandler(async (_req, res) => {
+    res.json(await medicalService.activePrescriptions())
   }),
 )
 

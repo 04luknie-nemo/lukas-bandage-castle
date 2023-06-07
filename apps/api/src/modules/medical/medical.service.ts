@@ -1,9 +1,33 @@
 import { prisma } from '../../db/prisma'
 import { NotFoundError } from '../../errors/httpErrors'
-import type { RecordInput, TreatmentInput } from './medical.schema'
+import type { PrescriptionInput, RecordInput, TreatmentInput } from './medical.schema'
+
+export async function addPrescription(recordId: number, input: PrescriptionInput) {
+  const record = await prisma.medicalRecord.findUnique({ where: { id: recordId } })
+  if (!record) throw new NotFoundError('Medical record')
+  return prisma.prescription.create({
+    data: {
+      ...input,
+      recordId,
+      startDate: new Date(input.startDate),
+      endDate: input.endDate ? new Date(input.endDate) : null,
+    },
+  })
+}
+
+/** Prescriptions that are active today, for the keepers' rounds. */
+export async function activePrescriptions() {
+  const today = new Date()
+  return prisma.prescription.findMany({
+    where: { startDate: { lte: today }, OR: [{ endDate: null }, { endDate: { gte: today } }] },
+    include: { record: { select: { monster: { select: { id: true, name: true } } } } },
+    orderBy: { startDate: 'asc' },
+  })
+}
 
 const recordInclude = {
   treatments: { orderBy: { id: 'asc' } },
+  prescriptions: { orderBy: { startDate: 'asc' } },
 } as const
 
 /**

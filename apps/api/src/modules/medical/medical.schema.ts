@@ -22,5 +22,20 @@ export const treatmentStatusSchema = z.object({
   status: z.enum(TREATMENT_STATUSES),
 })
 
+export const REMEDY_FORMS = ['POTION', 'SALVE', 'TINCTURE', 'POULTICE', 'ELIXIR'] as const
+
+export const prescriptionSchema = z
+  .object({
+    remedy: z.string().trim().min(2).max(191),
+    form: z.enum(REMEDY_FORMS),
+    dosage: z.string().trim().min(1).max(100),
+    frequency: z.string().trim().min(1).max(100),
+    startDate: dateOnly,
+    endDate: dateOnly.optional(),
+    notes: z.string().max(5000).optional(),
+  })
+  .refine((p) => !p.endDate || p.endDate >= p.startDate, { message: 'End date is before start date', path: ['endDate'] })
+
+export type PrescriptionInput = z.infer<typeof prescriptionSchema>
 export type RecordInput = z.infer<typeof recordSchema>
 export type TreatmentInput = z.infer<typeof treatmentSchema>

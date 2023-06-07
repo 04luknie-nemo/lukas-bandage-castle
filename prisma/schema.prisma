@@ -321,8 +321,9 @@ model MedicalRecord {
   notes     String?  @db.Text
   createdAt DateTime @default(now()) @map("created_at")
 
-  monster    Monster     @relation(fields: [monsterId], references: [id])
-  treatments Treatment[]
+  monster       Monster        @relation(fields: [monsterId], references: [id])
+  treatments    Treatment[]
+  prescriptions Prescription[]
 
   @@index([monsterId])
   @@map("medical_records")
@@ -343,4 +344,22 @@ model Treatment {
   @@index([recordId])
   @@index([status])
   @@map("treatments")
+}
+
+model Prescription {
+  id        Int       @id @default(autoincrement())
+  recordId  Int       @map("record_id")
+  remedy    String    @db.VarChar(191)
+  /// POTION | SALVE | TINCTURE | POULTICE | ELIXIR
+  form      String    @db.VarChar(16)
+  dosage    String    @db.VarChar(100)
+  frequency String    @db.VarChar(100)
+  startDate DateTime  @map("start_date") @db.Date
+  endDate   DateTime? @map("end_date") @db.Date
+  notes     String?   @db.Text
+
+  record MedicalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([recordId])
+  @@map("prescriptions")
 }
