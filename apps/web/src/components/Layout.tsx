@@ -29,6 +29,7 @@ export default function Layout() {
             <Link to="/intake">Intake</Link>
             <Link to="/stays">Stays</Link>
             <Link to="/lairs">Lairs</Link>
+            <Link to="/tickets">Tickets</Link>
             <Link to="/invoices">Invoices</Link>
             <Link to="/reports">Reports</Link>
           </>

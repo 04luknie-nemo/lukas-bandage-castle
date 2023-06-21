@@ -33,6 +33,10 @@ model User {
   customer Customer?
   roles    UserRole[]
 
+  ticketsAssigned Ticket[]        @relation("ticketAssignee")
+  ticketsReported Ticket[]        @relation("ticketReporter")
+  ticketComments  TicketComment[]
+
   @@map("tbl_user")
 }
 
@@ -362,4 +366,47 @@ model Prescription {
 
   @@index([recordId])
   @@map("prescriptions")
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(191)
+  description String?   @db.Text
+  /// OPEN | IN_PROGRESS | BLOCKED | DONE
+  status      String    @default("OPEN") @db.VarChar(16)
+  /// LOW | MEDIUM | HIGH | URGENT
+  priority    String    @default("MEDIUM") @db.VarChar(16)
+  /// MAINTENANCE | ESCAPE | CLEANING | SUPPLIES | OTHER
+  category    String    @default("OTHER") @db.VarChar(16)
+  assigneeId  Int?      @map("assignee_id")
+  reporterId  Int       @map("reporter_id")
+  lairId      Int?      @map("lair_id")
+  dueDate     DateTime? @map("due_date") @db.Date
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  closedAt    DateTime? @map("closed_at")
+
+  assignee User?           @relation("ticketAssignee", fields: [assigneeId], references: [id])
+  reporter User            @relation("ticketReporter", fields: [reporterId], references: [id])
+  comments TicketComment[]
+
+  @@index([status])
+  @@index([assigneeId])
+  @@index([reporterId])
+  @@map("tickets")
+}
+
+model TicketComment {
+  id        Int      @id @default(autoincrement())
+  ticketId  Int      @map("ticket_id")
+  authorId  Int      @map("author_id")
+  body      String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User   @relation(fields: [authorId], references: [id])
+
+  @@index([ticketId])
+  @@index([authorId])
+  @@map("ticket_comments")
 }

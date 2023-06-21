@@ -27,6 +27,9 @@ import LairDetailPage from './pages/lairs/LairDetailPage'
 import IntakePage from './pages/intake/IntakePage'
 import VetDashboardPage from './pages/medical/VetDashboardPage'
 import MonsterMedicalPage from './pages/medical/MonsterMedicalPage'
+import TicketListPage from './pages/tickets/TicketListPage'
+import TicketDetailPage from './pages/tickets/TicketDetailPage'
+import NewTicketPage from './pages/tickets/NewTicketPage'
 
 function Home() {
   const { user } = useAuth()
@@ -67,6 +70,9 @@ export default function App() {
         <Route path="/intake" element={<IntakePage />} />
         <Route path="/vet" element={<VetDashboardPage />} />
         <Route path="/monsters/:id/medical" element={<MonsterMedicalPage />} />
+        <Route path="/tickets" element={<TicketListPage />} />
+        <Route path="/tickets/new" element={<NewTicketPage />} />
+        <Route path="/tickets/:id" element={<TicketDetailPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route
