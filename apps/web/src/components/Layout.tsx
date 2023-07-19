@@ -30,6 +30,7 @@ export default function Layout() {
             <Link to="/stays">Stays</Link>
             <Link to="/lairs">Lairs</Link>
             <Link to="/tickets">Tickets</Link>
+            <Link to="/supplies">Supplies</Link>
             <Link to="/invoices">Invoices</Link>
             <Link to="/reports">Reports</Link>
           </>

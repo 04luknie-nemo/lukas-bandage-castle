@@ -410,3 +410,37 @@ model TicketComment {
   @@index([authorId])
   @@map("ticket_comments")
 }
+
+model Supply {
+  id                Int      @id @default(autoincrement())
+  name              String   @unique @db.VarChar(191)
+  /// FOOD | POTION | BANDAGE | BEDDING | CLEANING | OTHER
+  category          String   @db.VarChar(16)
+  /// kg, bottles, rolls, bales...
+  unit              String   @db.VarChar(32)
+  quantity          Decimal  @default(0) @db.Decimal(10, 2)
+  lowStockThreshold Decimal  @default(0) @map("low_stock_threshold") @db.Decimal(10, 2)
+  supplier          String?  @db.VarChar(191)
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  movements SupplyMovement[]
+
+  @@map("supplies")
+}
+
+model SupplyMovement {
+  id        Int      @id @default(autoincrement())
+  supplyId  Int      @map("supply_id")
+  /// positive = delivery, negative = used/spoiled
+  change    Decimal  @db.Decimal(10, 2)
+  /// DELIVERY | USED | SPOILED | ADJUSTMENT
+  reason    String   @db.VarChar(16)
+  note      String?  @db.VarChar(255)
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  supply Supply @relation(fields: [supplyId], references: [id], onDelete: Cascade)
+
+  @@index([supplyId])
+  @@map("supply_movements")
+}

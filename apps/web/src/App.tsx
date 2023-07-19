@@ -30,6 +30,7 @@ import MonsterMedicalPage from './pages/medical/MonsterMedicalPage'
 import TicketListPage from './pages/tickets/TicketListPage'
 import TicketDetailPage from './pages/tickets/TicketDetailPage'
 import NewTicketPage from './pages/tickets/NewTicketPage'
+import SuppliesPage from './pages/supplies/SuppliesPage'
 
 function Home() {
   const { user } = useAuth()
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/tickets" element={<TicketListPage />} />
         <Route path="/tickets/new" element={<NewTicketPage />} />
         <Route path="/tickets/:id" element={<TicketDetailPage />} />
+        <Route path="/supplies" element={<SuppliesPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

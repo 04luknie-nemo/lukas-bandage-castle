@@ -255,3 +255,13 @@ tr.done td {
   padding: 10px;
   border-radius: 6px;
 }
+tr.low td {
+  background: #fdecea;
+}
+input.small {
+  width: 70px;
+}
+.movement {
+  display: inline-flex;
+  gap: 4px;
+}
