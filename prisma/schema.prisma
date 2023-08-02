@@ -114,9 +114,10 @@ model Stay {
   dailyRate      Decimal?  @default(10.00) @map("daily_rate") @db.Decimal(10, 2)
   notes          String?   @db.Text
 
-  monster  Monster   @relation(fields: [monsterId], references: [id])
-  customer Customer  @relation(fields: [customerId], references: [id])
-  invoices Invoice[]
+  monster    Monster         @relation(fields: [monsterId], references: [id])
+  customer   Customer        @relation(fields: [customerId], references: [id])
+  invoices   Invoice[]
+  extensions StayExtension[]
 
   @@index([monsterId])
   @@index([customerId])
@@ -443,4 +444,19 @@ model SupplyMovement {
 
   @@index([supplyId])
   @@map("supply_movements")
+}
+
+model StayExtension {
+  id          Int      @id @default(autoincrement())
+  stayId      Int      @map("stay_id")
+  oldPickup   DateTime @map("old_pickup") @db.Date
+  newPickup   DateTime @map("new_pickup") @db.Date
+  reason      String   @db.VarChar(255)
+  createdById Int      @map("created_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  stay Stay @relation(fields: [stayId], references: [id], onDelete: Cascade)
+
+  @@index([stayId])
+  @@map("stay_extensions")
 }
