@@ -31,6 +31,7 @@ import TicketListPage from './pages/tickets/TicketListPage'
 import TicketDetailPage from './pages/tickets/TicketDetailPage'
 import NewTicketPage from './pages/tickets/NewTicketPage'
 import SuppliesPage from './pages/supplies/SuppliesPage'
+import FeedingPage from './pages/feeding/FeedingPage'
 
 function Home() {
   const { user } = useAuth()
@@ -75,6 +76,7 @@ export default function App() {
         <Route path="/tickets/new" element={<NewTicketPage />} />
         <Route path="/tickets/:id" element={<TicketDetailPage />} />
         <Route path="/supplies" element={<SuppliesPage />} />
+        <Route path="/feeding" element={<FeedingPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

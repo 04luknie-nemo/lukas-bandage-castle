@@ -460,3 +460,18 @@ model StayExtension {
   @@index([stayId])
   @@map("stay_extensions")
 }
+
+model FeedingLog {
+  id        Int      @id @default(autoincrement())
+  monsterId Int      @map("monster_id")
+  /// the day of the schedule, not when it was ticked off
+  date      DateTime @db.Date
+  /// "07:00", "14:00"...
+  mealTime  String   @map("meal_time") @db.VarChar(5)
+  fedById   Int      @map("fed_by_id")
+  fedAt     DateTime @default(now()) @map("fed_at")
+  note      String?  @db.VarChar(255)
+
+  @@unique([monsterId, date, mealTime])
+  @@map("feeding_logs")
+}
