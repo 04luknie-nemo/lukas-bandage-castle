@@ -32,6 +32,9 @@ import TicketDetailPage from './pages/tickets/TicketDetailPage'
 import NewTicketPage from './pages/tickets/NewTicketPage'
 import SuppliesPage from './pages/supplies/SuppliesPage'
 import FeedingPage from './pages/feeding/FeedingPage'
+import HiringHallPage from './pages/hiring/HiringHallPage'
+import ListingDetailPage from './pages/hiring/ListingDetailPage'
+import ManageListingsPage from './pages/hiring/ManageListingsPage'
 
 function Home() {
   const { user } = useAuth()
@@ -77,6 +80,9 @@ export default function App() {
         <Route path="/tickets/:id" element={<TicketDetailPage />} />
         <Route path="/supplies" element={<SuppliesPage />} />
         <Route path="/feeding" element={<FeedingPage />} />
+        <Route path="/hiring" element={<HiringHallPage />} />
+        <Route path="/hiring/manage" element={<ManageListingsPage />} />
+        <Route path="/hiring/:id" element={<ListingDetailPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

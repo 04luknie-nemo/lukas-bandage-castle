@@ -93,6 +93,7 @@ model Monster {
 
   lairAssignments LairAssignment[]
   medicalRecords  MedicalRecord[]
+  hiringListings  HiringListing[]
 
   @@index([ownerId])
   @@index([speciesId])
@@ -474,4 +475,27 @@ model FeedingLog {
 
   @@unique([monsterId, date, mealTime])
   @@map("feeding_logs")
+}
+
+model HiringListing {
+  id            Int      @id @default(autoincrement())
+  monsterId     Int      @map("monster_id")
+  title         String   @db.VarChar(191)
+  pitch         String   @db.Text
+  /// comma separated, e.g. "treasure guarding,intimidating roars"
+  skills        String?  @db.VarChar(255)
+  availableFrom DateTime @map("available_from") @db.Date
+  /// asking fee in gold pieces
+  feeGold       Decimal  @map("fee_gold") @db.Decimal(10, 2)
+  /// DRAFT | OPEN | CLOSED
+  status        String   @default("DRAFT") @db.VarChar(16)
+  createdById   Int      @map("created_by_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  monster Monster @relation(fields: [monsterId], references: [id])
+
+  @@index([monsterId])
+  @@index([status])
+  @@map("hiring_listings")
 }
