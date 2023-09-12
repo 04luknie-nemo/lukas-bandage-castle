@@ -1,5 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
-import { ageInYears, toGoldString } from '@bandage/shared'
+import { ageInYears, hasRole, toGoldString } from '@bandage/shared'
+import { useAuth } from '../../auth/AuthProvider'
+import ApplyForm from './ApplyForm'
 import { useApi } from '../../hooks/useApi'
 import DangerLevel from '../species/DangerLevel'
 import type { Listing } from './types'
@@ -7,6 +9,7 @@ import type { Listing } from './types'
 export default function ListingDetailPage() {
   const { id } = useParams()
   const { data: listing, error } = useApi<Listing>(`/hiring/listings/${id}`)
+  const { user } = useAuth()
 
   if (error) return <p className="page error">{error.message}</p>
   if (!listing) return <p className="page">Loading...</p>
@@ -38,6 +41,7 @@ export default function ListingDetailPage() {
           <b>Quirks:</b> {m.quirks}
         </p>
       )}
+      {hasRole(user, 'OVERLORD') && listing.status === 'OPEN' && <ApplyForm listingId={listing.id} monsterName={m.name} />}
     </div>
   )
 }

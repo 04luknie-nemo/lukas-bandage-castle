@@ -278,3 +278,16 @@ input.small {
   font-weight: bold;
   color: #8a6d00;
 }
+.reference {
+  border-left: 3px solid #d6c9b0;
+  padding-left: 8px;
+  margin-bottom: 8px;
+}
+blockquote {
+  font-style: italic;
+  color: #5a4a38;
+}
+.success {
+  background: #e3f4dc;
+  padding: 8px;
+}

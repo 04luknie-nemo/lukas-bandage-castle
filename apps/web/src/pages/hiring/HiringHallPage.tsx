@@ -16,7 +16,10 @@ export default function HiringHallPage() {
     <div className="page">
       <h2>🏛️ The Hiring Hall</h2>
       <p className="muted">Loyal, rested and fully patched-up monsters, ready for a new lair.</p>
-      {hasRole(user, 'ADMIN', 'FRONT_DESK') && <Link to="/hiring/manage">Manage listings →</Link>}
+      <div className="toolbar">
+        {hasRole(user, 'ADMIN', 'FRONT_DESK') && <Link to="/hiring/manage">Manage listings →</Link>}
+        <Link to="/hiring/applications">{hasRole(user, 'ADMIN', 'FRONT_DESK') ? 'Applications' : 'My applications'} →</Link>
+      </div>
       {listings.length === 0 ? (
         <p>Every monster has found a home. Check back soon!</p>
       ) : (

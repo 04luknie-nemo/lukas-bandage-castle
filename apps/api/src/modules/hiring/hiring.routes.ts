@@ -5,6 +5,8 @@ import { requireRole } from '../../middleware/requireRole'
 import { validate } from '../../middleware/validate'
 import { listingSchema, listingStatusSchema } from './hiring.schema'
 import * as hiringService from './hiring.service'
+import * as applicationsService from './applications.service'
+import { z } from 'zod'
 
 export const hiringRouter = Router()
 
@@ -40,6 +42,60 @@ hiringRouter.post(
   validate(listingSchema),
   asyncHandler(async (req, res) => {
     res.status(201).json(await hiringService.createListing(req.body, req.user!.id))
+  }),
+)
+
+// --- applications (#41) ---
+
+const applySchema = z.object({
+  message: z.string().trim().min(20, 'Tell us a bit more about yourself and your lair').max(5000),
+  lairDescription: z.string().max(5000).optional(),
+  references: z
+    .array(
+      z.object({
+        refereeName: z.string().trim().min(2).max(191),
+        relationship: z.string().trim().min(2).max(191),
+        text: z.string().trim().min(10).max(2000),
+      }),
+    )
+    .max(3)
+    .default([]),
+})
+
+hiringRouter.post(
+  '/listings/:id/applications',
+  requireRole('OVERLORD'),
+  validate(applySchema),
+  asyncHandler(async (req, res) => {
+    res.status(201).json(await applicationsService.apply(Number(req.params.id), req.user!.customerId, req.body))
+  }),
+)
+
+hiringRouter.get(
+  '/applications',
+  requireRole('OVERLORD', ...STAFF),
+  asyncHandler(async (req, res) => {
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined
+    // overlords only see their own
+    const customerId = hasRole(req.user, ...STAFF) ? undefined : (req.user!.customerId ?? -1)
+    res.json(await applicationsService.listApplications({ customerId, status }))
+  }),
+)
+
+hiringRouter.post(
+  '/applications/:id/withdraw',
+  requireRole('OVERLORD'),
+  asyncHandler(async (req, res) => {
+    res.json(await applicationsService.withdraw(Number(req.params.id), req.user!.customerId))
+  }),
+)
+
+hiringRouter.post(
+  '/applications/:id/decision',
+  requireRole(...STAFF),
+  validate(z.object({ decision: z.enum(['ACCEPTED', 'REJECTED']) })),
+  asyncHandler(async (req, res) => {
+    res.json(await applicationsService.decide(Number(req.params.id), req.body.decision, req.user!.id))
   }),
 )
 

@@ -493,9 +493,44 @@ model HiringListing {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  monster Monster @relation(fields: [monsterId], references: [id])
+  monster      Monster             @relation(fields: [monsterId], references: [id])
+  applications HiringApplication[]
 
   @@index([monsterId])
   @@index([status])
   @@map("hiring_listings")
+}
+
+model HiringApplication {
+  id                 Int       @id @default(autoincrement())
+  listingId          Int       @map("listing_id")
+  /// the overlord's customer profile
+  customerId         Int       @map("customer_id")
+  message            String    @db.Text
+  lairDescription    String?   @map("lair_description") @db.Text
+  /// PENDING | ACCEPTED | REJECTED | WITHDRAWN
+  status             String    @default("PENDING") @db.VarChar(16)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  decidedAt          DateTime? @map("decided_at")
+  decidedById        Int?      @map("decided_by_id")
+
+  listing    HiringListing   @relation(fields: [listingId], references: [id])
+  references HireReference[]
+
+  @@index([listingId])
+  @@index([customerId])
+  @@map("hiring_applications")
+}
+
+model HireReference {
+  id            Int    @id @default(autoincrement())
+  applicationId Int    @map("application_id")
+  refereeName   String @map("referee_name") @db.VarChar(191)
+  relationship  String @db.VarChar(191)
+  text          String @db.Text
+
+  application HiringApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("hire_references")
 }
