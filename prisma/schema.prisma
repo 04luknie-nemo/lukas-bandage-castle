@@ -516,6 +516,7 @@ model HiringApplication {
 
   listing    HiringListing   @relation(fields: [listingId], references: [id])
   references HireReference[]
+  contract   HireContract?
 
   @@index([listingId])
   @@index([customerId])
@@ -533,4 +534,25 @@ model HireReference {
 
   @@index([applicationId])
   @@map("hire_references")
+}
+
+model HireContract {
+  id            Int       @id @default(autoincrement())
+  applicationId Int       @unique @map("application_id")
+  monsterId     Int       @map("monster_id")
+  customerId    Int       @map("customer_id")
+  /// e.g. HH-7KQ2, printed on the parchment
+  reference     String    @unique @db.VarChar(16)
+  /// gold pieces
+  fee           Float
+  startDate     DateTime  @map("start_date") @db.Date
+  terms         String    @db.Text
+  signedAt      DateTime? @map("signed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  application HiringApplication @relation(fields: [applicationId], references: [id])
+
+  @@index([monsterId])
+  @@index([customerId])
+  @@map("hire_contracts")
 }

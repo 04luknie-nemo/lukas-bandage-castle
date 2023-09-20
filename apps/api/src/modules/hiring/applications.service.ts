@@ -1,6 +1,7 @@
 import { prisma } from '../../db/prisma'
 import { BadRequestError, ConflictError, ForbiddenError, NotFoundError } from '../../errors/httpErrors'
 import { sendRaven } from '../../legacy/ravenPost/ravenPost'
+import { contractReference, STANDARD_TERMS } from './reference'
 
 export type ApplyInput = {
   message: string
@@ -71,6 +72,18 @@ export async function decide(id: number, decision: 'ACCEPTED' | 'REJECTED', staf
       await tx.hiringApplication.updateMany({
         where: { listingId: app.listingId, status: 'PENDING', id: { not: id } },
         data: { status: 'REJECTED', decidedAt: new Date(), decidedById: staffId },
+      })
+      // the contract is drafted straight away; the overlord signs it from "My contracts"
+      await tx.hireContract.create({
+        data: {
+          applicationId: id,
+          monsterId: app.listing.monsterId,
+          customerId: app.customerId,
+          reference: contractReference(),
+          fee: Number(app.listing.feeGold),
+          startDate: app.listing.availableFrom > new Date() ? app.listing.availableFrom : new Date(),
+          terms: STANDARD_TERMS,
+        },
       })
     }
     return result

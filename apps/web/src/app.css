@@ -291,3 +291,11 @@ blockquote {
   background: #e3f4dc;
   padding: 8px;
 }
+.parchment {
+  background: #fbf3dc;
+}
+.terms {
+  white-space: pre-wrap;
+  font-family: Georgia, serif;
+  font-size: 13px;
+}

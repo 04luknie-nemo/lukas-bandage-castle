@@ -19,6 +19,7 @@ export default function HiringHallPage() {
       <div className="toolbar">
         {hasRole(user, 'ADMIN', 'FRONT_DESK') && <Link to="/hiring/manage">Manage listings →</Link>}
         <Link to="/hiring/applications">{hasRole(user, 'ADMIN', 'FRONT_DESK') ? 'Applications' : 'My applications'} →</Link>
+        <Link to="/hiring/contracts">Contracts →</Link>
       </div>
       {listings.length === 0 ? (
         <p>Every monster has found a home. Check back soon!</p>

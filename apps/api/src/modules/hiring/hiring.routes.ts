@@ -6,6 +6,7 @@ import { validate } from '../../middleware/validate'
 import { listingSchema, listingStatusSchema } from './hiring.schema'
 import * as hiringService from './hiring.service'
 import * as applicationsService from './applications.service'
+import * as contractsService from './contracts.service'
 import { z } from 'zod'
 
 export const hiringRouter = Router()
@@ -96,6 +97,25 @@ hiringRouter.post(
   validate(z.object({ decision: z.enum(['ACCEPTED', 'REJECTED']) })),
   asyncHandler(async (req, res) => {
     res.json(await applicationsService.decide(Number(req.params.id), req.body.decision, req.user!.id))
+  }),
+)
+
+// --- contracts ---
+
+hiringRouter.get(
+  '/contracts',
+  requireRole('OVERLORD', ...STAFF),
+  asyncHandler(async (req, res) => {
+    const customerId = hasRole(req.user, ...STAFF) ? undefined : (req.user!.customerId ?? -1)
+    res.json(await contractsService.listContracts(customerId))
+  }),
+)
+
+hiringRouter.post(
+  '/contracts/:id/sign',
+  requireRole('OVERLORD'),
+  asyncHandler(async (req, res) => {
+    res.json(await contractsService.signContract(Number(req.params.id), req.user!.customerId))
   }),
 )
 
