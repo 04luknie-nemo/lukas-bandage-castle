@@ -22,6 +22,14 @@ hiringRouter.get(
 )
 
 hiringRouter.get(
+  '/listings/soon',
+  requireRole('OVERLORD', 'ADMIN', 'FRONT_DESK', 'KEEPER', 'VET'),
+  asyncHandler(async (_req, res) => {
+    res.json(await hiringService.availableSoon())
+  }),
+)
+
+hiringRouter.get(
   '/listings/all',
   requireRole(...STAFF),
   asyncHandler(async (_req, res) => {

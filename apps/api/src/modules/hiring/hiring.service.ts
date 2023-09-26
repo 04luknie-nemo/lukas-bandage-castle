@@ -43,6 +43,26 @@ export async function publicListings() {
   return listings.map(toDto)
 }
 
+/**
+ * "Available soon": open listings whose available-from date is in the next
+ * 30 days, so overlords can plan ahead (#44).
+ */
+export async function availableSoon() {
+  const today = new Date()
+  const in30Days = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000)
+  const listings = await prisma.hiringListing.findMany({
+    where: { status: 'OPEN', availableFrom: { gt: today, lte: in30Days } },
+    include: {
+      monster: {
+        select: { ...monsterSelect.select, stays: { where: { status: 'CHECKED_IN' }, select: { status: true, reason: true } } },
+      },
+    },
+    orderBy: { availableFrom: 'asc' },
+  })
+  // don't advertise monsters that are still being patched up
+  return listings.filter((l) => l.monster.stays.every((s) => s.status !== 'TREATMENT')).map(toDto)
+}
+
 /** All listings, including drafts, for staff. */
 export async function allListings() {
   const listings = await prisma.hiringListing.findMany({
