@@ -93,6 +93,7 @@ model Monster {
 
   lairAssignments LairAssignment[]
   medicalRecords  MedicalRecord[]
+  hiringListings  HiringListing[]
 
   @@index([ownerId])
   @@index([speciesId])
@@ -474,4 +475,84 @@ model FeedingLog {
 
   @@unique([monsterId, date, mealTime])
   @@map("feeding_logs")
+}
+
+model HiringListing {
+  id            Int      @id @default(autoincrement())
+  monsterId     Int      @map("monster_id")
+  title         String   @db.VarChar(191)
+  pitch         String   @db.Text
+  /// comma separated, e.g. "treasure guarding,intimidating roars"
+  skills        String?  @db.VarChar(255)
+  availableFrom DateTime @map("available_from") @db.Date
+  /// asking fee in gold pieces
+  feeGold       Decimal  @map("fee_gold") @db.Decimal(10, 2)
+  /// DRAFT | OPEN | CLOSED
+  status        String   @default("DRAFT") @db.VarChar(16)
+  createdById   Int      @map("created_by_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  monster      Monster             @relation(fields: [monsterId], references: [id])
+  applications HiringApplication[]
+
+  @@index([monsterId])
+  @@index([status])
+  @@map("hiring_listings")
+}
+
+model HiringApplication {
+  id                 Int       @id @default(autoincrement())
+  listingId          Int       @map("listing_id")
+  /// the overlord's customer profile
+  customerId         Int       @map("customer_id")
+  message            String    @db.Text
+  lairDescription    String?   @map("lair_description") @db.Text
+  /// PENDING | ACCEPTED | REJECTED | WITHDRAWN
+  status             String    @default("PENDING") @db.VarChar(16)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  decidedAt          DateTime? @map("decided_at")
+  decidedById        Int?      @map("decided_by_id")
+
+  listing    HiringListing   @relation(fields: [listingId], references: [id])
+  references HireReference[]
+  contract   HireContract?
+
+  @@index([listingId])
+  @@index([customerId])
+  @@map("hiring_applications")
+}
+
+model HireReference {
+  id            Int    @id @default(autoincrement())
+  applicationId Int    @map("application_id")
+  refereeName   String @map("referee_name") @db.VarChar(191)
+  relationship  String @db.VarChar(191)
+  text          String @db.Text
+
+  application HiringApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("hire_references")
+}
+
+model HireContract {
+  id            Int       @id @default(autoincrement())
+  applicationId Int       @unique @map("application_id")
+  monsterId     Int       @map("monster_id")
+  customerId    Int       @map("customer_id")
+  /// e.g. HH-7KQ2, printed on the parchment
+  reference     String    @unique @db.VarChar(16)
+  /// gold pieces
+  fee           Float
+  startDate     DateTime  @map("start_date") @db.Date
+  terms         String    @db.Text
+  signedAt      DateTime? @map("signed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  application HiringApplication @relation(fields: [applicationId], references: [id])
+
+  @@index([monsterId])
+  @@index([customerId])
+  @@map("hire_contracts")
 }
