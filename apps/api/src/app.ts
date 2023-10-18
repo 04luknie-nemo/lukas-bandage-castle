@@ -14,6 +14,7 @@ import { suppliesRouter } from './modules/supplies/supplies.routes'
 import { stayExtensionsRouter } from './modules/stays/extensions.routes'
 import { feedingRouter } from './modules/feeding/feeding.routes'
 import { hiringRouter } from './modules/hiring/hiring.routes'
+import { courierRouter } from './modules/courier/courier.routes'
 
 export function createApp() {
   const app = express()
@@ -36,6 +37,7 @@ export function createApp() {
   app.use('/api/supplies', suppliesRouter)
   app.use('/api/feeding', feedingRouter)
   app.use('/api/hiring', hiringRouter)
+  app.use('/api/courier', courierRouter)
   app.use('/api/stays', stayExtensionsRouter) // the rest of /api/stays is in legacy
 
   // pre-2023 routes

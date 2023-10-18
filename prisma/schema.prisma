@@ -462,6 +462,59 @@ model StayExtension {
   @@map("stay_extensions")
 }
 
+// --- Wyvern courier (2023) -----------------------------------------------
+
+/// The castle's couriers. Mostly wyverns. Also one cart.
+model Courier {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  /// WYVERN | GRIFFIN | BAT_SWARM | CART
+  kind      String   @db.VarChar(16)
+  /// the heaviest monster it can carry, in kg
+  maxLoadKg Int      @map("max_load_kg")
+  /// leagues per hour, roughly. Headwinds not included.
+  speed     Int      @default(20)
+  active    Boolean  @default(true)
+  notes     String?  @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  jobs CourierJob[]
+
+  @@map("couriers")
+}
+
+/// One trip: fetch a monster from its owner's lair (PICKUP) or fly it home (RETURN).
+model CourierJob {
+  id              Int       @id @default(autoincrement())
+  stayId          Int?      @map("stay_id")
+  monsterId       Int       @map("monster_id")
+  customerId      Int       @map("customer_id")
+  /// PICKUP (lair -> castle) | RETURN (castle -> lair)
+  direction       String    @db.VarChar(16)
+  address         String    @db.VarChar(255)
+  distanceLeagues Decimal   @map("distance_leagues") @db.Decimal(6, 1)
+  weightKg        Int       @map("weight_kg")
+  scheduledFor    DateTime  @map("scheduled_for")
+  /// how long the courier is away, there and back, loading included
+  durationMin     Int       @map("duration_min")
+  courierId       Int?      @map("courier_id")
+  /// REQUESTED | SCHEDULED | IN_FLIGHT | DELIVERED | CANCELLED
+  status          String    @default("REQUESTED") @db.VarChar(16)
+  /// gold pieces
+  fee             Decimal   @db.Decimal(10, 2)
+  notes           String?   @db.Text
+  createdById     Int?      @map("created_by_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  deliveredAt     DateTime? @map("delivered_at")
+
+  courier Courier? @relation(fields: [courierId], references: [id])
+
+  @@index([scheduledFor])
+  @@index([stayId])
+  @@index([courierId])
+  @@map("courier_jobs")
+}
+
 model FeedingLog {
   id        Int      @id @default(autoincrement())
   monsterId Int      @map("monster_id")

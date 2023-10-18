@@ -37,6 +37,8 @@ import ListingDetailPage from './pages/hiring/ListingDetailPage'
 import ManageListingsPage from './pages/hiring/ManageListingsPage'
 import ApplicationsPage from './pages/hiring/ApplicationsPage'
 import ContractsPage from './pages/hiring/ContractsPage'
+import CourierJobsPage from './pages/courier/CourierJobsPage'
+import NewCourierJobPage from './pages/courier/NewCourierJobPage'
 
 function Home() {
   const { user } = useAuth()
@@ -87,6 +89,8 @@ export default function App() {
         <Route path="/hiring/applications" element={<ApplicationsPage />} />
         <Route path="/hiring/contracts" element={<ContractsPage />} />
         <Route path="/hiring/:id" element={<ListingDetailPage />} />
+        <Route path="/courier" element={<CourierJobsPage />} />
+        <Route path="/courier/new" element={<NewCourierJobPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

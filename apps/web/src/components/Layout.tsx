@@ -28,6 +28,7 @@ export default function Layout() {
             <Link to="/customers">Customers</Link>
             <Link to="/intake">Intake</Link>
             <Link to="/stays">Stays</Link>
+            <Link to="/courier">Courier</Link>
             <Link to="/lairs">Lairs</Link>
             <Link to="/tickets">Tickets</Link>
             <Link to="/feeding">Feeding</Link>
