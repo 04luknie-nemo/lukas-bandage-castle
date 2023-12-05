@@ -150,3 +150,24 @@ export async function setStatus(id: number, status: JobStatus) {
     },
   })
 }
+
+/** Everything one day's couriers need to know, grouped per courier. Cancelled trips are left out. */
+export async function routeSheet(date: string) {
+  const jobs = await listJobs({ date })
+  const live = jobs.filter((j) => j.status !== 'CANCELLED')
+  const couriers = await prisma.courier.findMany({ where: { id: { in: live.map((j) => j.courierId).filter((id): id is number => id !== null) } } })
+
+  return {
+    date,
+    couriers: couriers.map((c) => {
+      const mine = live.filter((j) => j.courierId === c.id)
+      return {
+        courier: c,
+        pickups: mine.filter((j) => j.direction === 'PICKUP'),
+        returns: mine.filter((j) => j.direction === 'RETURN'),
+        minutesAway: mine.reduce((sum, j) => sum + j.durationMin, 0),
+      }
+    }),
+    unassigned: live.filter((j) => j.courierId === null),
+  }
+}

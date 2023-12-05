@@ -35,6 +35,14 @@ courierRouter.get(
 )
 
 courierRouter.get(
+  '/route-sheet',
+  asyncHandler(async (req, res) => {
+    const date = typeof req.query.date === 'string' ? req.query.date : new Date().toISOString().slice(0, 10)
+    res.json(await courier.routeSheet(date))
+  }),
+)
+
+courierRouter.get(
   '/jobs/:id',
   asyncHandler(async (req, res) => {
     res.json(await courier.getJob(Number(req.params.id)))

@@ -39,6 +39,7 @@ import ApplicationsPage from './pages/hiring/ApplicationsPage'
 import ContractsPage from './pages/hiring/ContractsPage'
 import CourierJobsPage from './pages/courier/CourierJobsPage'
 import NewCourierJobPage from './pages/courier/NewCourierJobPage'
+import RouteSheetPage from './pages/courier/RouteSheetPage'
 
 function Home() {
   const { user } = useAuth()
@@ -91,6 +92,7 @@ export default function App() {
         <Route path="/hiring/:id" element={<ListingDetailPage />} />
         <Route path="/courier" element={<CourierJobsPage />} />
         <Route path="/courier/new" element={<NewCourierJobPage />} />
+        <Route path="/courier/route-sheet" element={<RouteSheetPage />} />
         <Route path="/my/monsters" element={<MyMonstersPage />} />
         <Route path="/my/invoices" element={<MyInvoicesPage />} />
         <Route

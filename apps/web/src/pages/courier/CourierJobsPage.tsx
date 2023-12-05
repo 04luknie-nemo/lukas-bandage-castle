@@ -45,6 +45,7 @@ export default function CourierJobsPage() {
       <h2>🪽 Wyvern courier</h2>
       <div className="toolbar">
         <Link to="/courier/new">+ New trip</Link>
+        <Link to={`/courier/route-sheet?date=${day}`}>🗺️ Route sheet</Link>
         <button onClick={() => setDay(addDays(day, -1))}>←</button>
         <input type="date" value={day} onChange={(e) => setDay(e.target.value)} />
         <button onClick={() => setDay(addDays(day, 1))}>→</button>
