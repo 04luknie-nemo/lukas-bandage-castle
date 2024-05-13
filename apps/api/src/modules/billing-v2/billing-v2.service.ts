@@ -2,6 +2,7 @@ import { addDays } from 'date-fns'
 import { prisma } from '../../db/prisma'
 import { BadRequestError, NotFoundError } from '../../errors/httpErrors'
 import { buildLines, invoiceNumber, totalOf } from './engine'
+import { courierLines } from './courierLines'
 import { NotificationService } from '../notifications/notification.service'
 import { formatGold } from '../../utils/formatGold'
 
@@ -100,7 +101,8 @@ export async function createFromStay(stayId: number) {
   const existing = await prisma.invoiceV2.findFirst({ where: { stayId, status: { not: 'VOID' } } })
   if (existing) throw new BadRequestError(`Stay already invoiced as ${existing.number}`)
 
-  const lines = buildLines({ ...stay, dailyRate: stay.dailyRate?.toString() ?? null })
+  const trips = await prisma.courierJob.findMany({ where: { stayId, status: 'DELIVERED' }, orderBy: { scheduledFor: 'asc' } })
+  const lines = [...buildLines({ ...stay, dailyRate: stay.dailyRate?.toString() ?? null }), ...courierLines(trips)]
   const total = totalOf(lines)
   const issuedAt = new Date()
 
