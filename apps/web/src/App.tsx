@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import { RequireAuth } from './auth/RequireAuth'
-import { useAuth } from './auth/AuthProvider'
 import LoginPage from './pages/LoginPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -23,6 +22,7 @@ import BulletinIndexPage from './pages/bulletin/BulletinIndexPage'
 import BulletinPageView from './pages/bulletin/BulletinPageView'
 import BulletinPostView from './pages/bulletin/BulletinPostView'
 import BulletinEditorPage from './pages/bulletin/BulletinEditorPage'
+import DashboardPage from './pages/dashboard/DashboardPage'
 import ReportsPage from './pages/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
 import MyInvoicesPage from './pages/MyInvoicesPage'
@@ -48,11 +48,6 @@ import CourierJobsPage from './pages/courier/CourierJobsPage'
 import NewCourierJobPage from './pages/courier/NewCourierJobPage'
 import RouteSheetPage from './pages/courier/RouteSheetPage'
 
-function Home() {
-  const { user } = useAuth()
-  return <div className="page">Welcome to the castle, {user?.name || user?.email} 🏰</div>
-}
-
 export default function App() {
   return (
     <Routes>
@@ -66,7 +61,7 @@ export default function App() {
           </RequireAuth>
         }
       >
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<DashboardPage />} />
         <Route path="/monsters" element={<MonsterListPage />} />
         <Route path="/monsters/new" element={<MonsterFormPage />} />
         <Route path="/monsters/:id" element={<MonsterDetailPage />} />
