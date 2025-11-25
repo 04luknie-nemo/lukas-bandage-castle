@@ -24,6 +24,7 @@ import { bulletinRouter } from './modules/bulletin/bulletin.routes'
 import { dashboardRouter } from './modules/dashboard/dashboard.routes'
 import { auditRouter } from './modules/audit/audit.routes'
 import { settingsRouter } from './modules/settings/settings.routes'
+import { rotaRouter } from './modules/rota/rota.routes'
 
 export function createApp() {
   const app = express()
@@ -55,6 +56,7 @@ export function createApp() {
   app.use('/api/dashboard', dashboardRouter)
   app.use('/api/audit', auditRouter)
   app.use('/api/settings', settingsRouter)
+  app.use('/api/rota', rotaRouter)
   app.use('/api/stays', stayExtensionsRouter, staysRouter) // the rest of /api/stays is in legacy
 
   // pre-2023 routes
