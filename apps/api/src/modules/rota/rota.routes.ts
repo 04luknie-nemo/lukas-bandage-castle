@@ -3,8 +3,9 @@ import { STAFF_ROLES } from '@bandage/shared'
 import { asyncHandler } from '../../middleware/asyncHandler'
 import { requireRole } from '../../middleware/requireRole'
 import { validate } from '../../middleware/validate'
-import { decideSchema, leaveSchema, shiftSchema, weekQuerySchema } from './rota.schema'
+import { decideSchema, leaveSchema, shiftSchema, swapSchema, weekQuerySchema } from './rota.schema'
 import * as rota from './rota.service'
+import * as swaps from './swaps'
 
 export const rotaRouter = Router()
 
@@ -83,5 +84,33 @@ rotaRouter.post(
   validate(decideSchema),
   asyncHandler(async (req, res) => {
     res.json(await rota.decideLeave(Number(req.params.id), req.body.status, req.user!.id))
+  }),
+)
+
+// --- swaps ---------------------------------------------------------------
+
+rotaRouter.get(
+  '/swaps',
+  asyncHandler(async (req, res) => {
+    res.json(await swaps.swapsFor(req.user!.id))
+  }),
+)
+
+rotaRouter.post(
+  '/shifts/:id/swap',
+  validate(swapSchema),
+  asyncHandler(async (req, res) => {
+    res.status(201).json(await swaps.offerSwap(Number(req.params.id), req.user!.id, req.body.toUserId, req.body.message))
+  }),
+)
+
+rotaRouter.post(
+  '/swaps/:id/:action(accept|decline|cancel)',
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id)
+    const userId = req.user!.id
+    if (req.params.action === 'accept') return res.json(await swaps.acceptSwap(id, userId))
+    if (req.params.action === 'decline') return res.json(await swaps.declineSwap(id, userId))
+    res.json(await swaps.cancelSwap(id, userId))
   }),
 )

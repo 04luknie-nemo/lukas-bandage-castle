@@ -27,5 +27,10 @@ export const leaveSchema = z
 
 export const decideSchema = z.object({ status: z.enum(['APPROVED', 'REJECTED']) })
 
+export const swapSchema = z.object({
+  toUserId: z.number().int().positive(),
+  message: z.string().trim().max(255).optional(),
+})
+
 export type ShiftInput = z.infer<typeof shiftSchema>
 export type LeaveInput = z.infer<typeof leaveSchema>

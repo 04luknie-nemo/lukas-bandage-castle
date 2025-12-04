@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { format, parseISO } from 'date-fns'
 import { apiFetch } from '../../api'
 import { POST_ICON, POST_LABEL, timeRange, type Leave, type Shift } from './types'
+import SwapsPanel, { OfferSwap } from './SwapsPanel'
 
 const LEAVE_ICON: Record<Leave['status'], string> = { REQUESTED: '⏳', APPROVED: '✅', REJECTED: '❌' }
 
@@ -37,6 +38,7 @@ export default function MyShiftsPage() {
     queryKey: ['rota-mine'],
     queryFn: () => apiFetch('/rota/mine') as Promise<{ shifts: Shift[]; leave: Leave[] }>,
   })
+  const [offering, setOffering] = useState<number | null>(null)
 
   if (isLoading || !data) return <p className="page">Loading...</p>
 
@@ -46,6 +48,8 @@ export default function MyShiftsPage() {
       <p>
         <Link to="/rota">← whole rota</Link>
       </p>
+
+      <SwapsPanel />
 
       {data.shifts.length === 0 ? (
         <p className="muted">No shifts in the next four weeks. Lucky you.</p>
@@ -59,6 +63,15 @@ export default function MyShiftsPage() {
                 <td>
                   {POST_ICON[s.post]} {POST_LABEL[s.post]}
                   {s.area && <span className="muted"> · {s.area}</span>}
+                </td>
+                <td>
+                  {offering === s.id ? (
+                    <OfferSwap shift={s} onDone={() => setOffering(null)} />
+                  ) : (
+                    <button className="link" onClick={() => setOffering(s.id)}>
+                      swap...
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
