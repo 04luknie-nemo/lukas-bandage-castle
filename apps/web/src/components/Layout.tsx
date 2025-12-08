@@ -33,6 +33,7 @@ export default function Layout() {
             <Link to="/courier">Courier</Link>
             <Link to="/lairs">Lairs</Link>
             <Link to="/tickets">Tickets</Link>
+            <Link to="/rota">Rota</Link>
             <Link to="/feeding">Feeding</Link>
             <Link to="/supplies">Supplies</Link>
             <Link to="/invoices">Invoices</Link>

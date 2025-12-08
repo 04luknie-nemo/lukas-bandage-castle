@@ -18,6 +18,8 @@ import InvoiceDetailPage from './pages/InvoiceDetailPage'
 import InvoicesV2Page from './pages/billing/InvoicesV2Page'
 import TherapyPlansPage from './pages/therapy/TherapyPlansPage'
 import TherapyPlanPage from './pages/therapy/TherapyPlanPage'
+import RotaWeekPage from './pages/rota/RotaWeekPage'
+import MyShiftsPage from './pages/rota/MyShiftsPage'
 import BulletinIndexPage from './pages/bulletin/BulletinIndexPage'
 import BulletinPageView from './pages/bulletin/BulletinPageView'
 import BulletinPostView from './pages/bulletin/BulletinPostView'
@@ -79,6 +81,8 @@ export default function App() {
         <Route path="/billing/v2" element={<InvoicesV2Page />} />
         <Route path="/therapy" element={<TherapyPlansPage />} />
         <Route path="/therapy/:id" element={<TherapyPlanPage />} />
+        <Route path="/rota" element={<RotaWeekPage />} />
+        <Route path="/rota/mine" element={<MyShiftsPage />} />
         <Route path="/bulletin" element={<BulletinIndexPage />} />
         <Route path="/bulletin/pages/:slug" element={<BulletinPageView />} />
         <Route path="/bulletin/posts/:slug" element={<BulletinPostView />} />

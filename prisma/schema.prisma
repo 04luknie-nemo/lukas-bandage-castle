@@ -808,6 +808,63 @@ model AuditLog {
   @@map("audit_log")
 }
 
+// --- Staff rota (2025) ---------------------------------------------------
+
+/// Who works when. Times are castle time.
+model Shift {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  startsAt    DateTime @map("starts_at")
+  endsAt      DateTime @map("ends_at")
+  /// KEEPER | VET | FRONT_DESK | THERAPIST | NIGHT_WATCH
+  post        String   @db.VarChar(16)
+  /// "North Tower", "Ember Vault", "Front desk"...
+  area        String?  @db.VarChar(100)
+  note        String?  @db.VarChar(255)
+  createdById Int?     @map("created_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  swaps ShiftSwap[]
+
+  @@index([userId, startsAt])
+  @@index([startsAt])
+  @@map("shifts")
+}
+
+/// "Can you take my Saturday night?"
+model ShiftSwap {
+  id         Int       @id @default(autoincrement())
+  shiftId    Int       @map("shift_id")
+  fromUserId Int       @map("from_user_id")
+  toUserId   Int       @map("to_user_id")
+  /// PENDING | ACCEPTED | DECLINED | CANCELLED
+  status     String    @default("PENDING") @db.VarChar(16)
+  message    String?   @db.VarChar(255)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  decidedAt  DateTime? @map("decided_at")
+
+  shift Shift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+
+  @@index([toUserId, status])
+  @@map("shift_swaps")
+}
+
+model TimeOff {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  fromDate    DateTime @map("from_date") @db.Date
+  toDate      DateTime @map("to_date") @db.Date
+  reason      String?  @db.VarChar(255)
+  /// REQUESTED | APPROVED | REJECTED
+  status      String   @default("REQUESTED") @db.VarChar(16)
+  decidedById Int?     @map("decided_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("time_off")
+}
+
 /// Castle-wide settings edited by admins (opening hours, prices...). value is JSON.
 model Setting {
   key       String   @id @db.VarChar(64)
