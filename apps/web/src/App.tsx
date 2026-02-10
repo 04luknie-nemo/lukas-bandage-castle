@@ -25,6 +25,7 @@ import BulletinPageView from './pages/bulletin/BulletinPageView'
 import BulletinPostView from './pages/bulletin/BulletinPostView'
 import BulletinEditorPage from './pages/bulletin/BulletinEditorPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
+import NotFoundPage from './pages/NotFoundPage'
 import ReportsPage from './pages/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
 import MyInvoicesPage from './pages/MyInvoicesPage'
@@ -135,6 +136,7 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )
