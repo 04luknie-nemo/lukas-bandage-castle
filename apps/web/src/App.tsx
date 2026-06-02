@@ -27,6 +27,7 @@ import BulletinPostView from './pages/bulletin/BulletinPostView'
 import BulletinEditorPage from './pages/bulletin/BulletinEditorPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AccountPage from './pages/account/AccountPage'
 import ClassicReportsPage from './pages/ReportsPage'
 import ReportsPage from './pages/reports/ReportsPage'
 import MyMonstersPage from './pages/MyMonstersPage'
@@ -140,6 +141,7 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
