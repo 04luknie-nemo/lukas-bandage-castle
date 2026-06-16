@@ -28,6 +28,7 @@ import { settingsRouter } from './modules/settings/settings.routes'
 import { rotaRouter } from './modules/rota/rota.routes'
 import { reportsRouter } from './modules/reports/reports.routes'
 import { monsterProfilesRouter } from './modules/monsters/monsters.routes'
+import { bookingsRouter } from './modules/bookings/bookings.routes'
 
 export function createApp() {
   const app = express()
@@ -63,6 +64,7 @@ export function createApp() {
   app.use('/api/rota', rotaRouter)
   app.use('/api/reports-v2', reportsRouter)
   app.use('/api/monster-profiles', monsterProfilesRouter)
+  app.use('/api/booking-requests', bookingsRouter)
   app.use('/api/stays', stayExtensionsRouter, staysRouter) // the rest of /api/stays is in legacy
 
   // pre-2023 routes

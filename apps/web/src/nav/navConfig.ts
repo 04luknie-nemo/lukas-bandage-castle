@@ -29,6 +29,7 @@ export const NAV: NavItem[] = [
   { group: 'care', to: '/rota', label: 'Rota', icon: '🗓️', roles: STAFF },
 
   { group: 'business', to: '/intake', label: 'Intake', icon: '🚪', roles: ['ADMIN', 'FRONT_DESK', 'KEEPER'] },
+  { group: 'business', to: '/bookings', label: 'Requests', icon: '📨', roles: DESK },
   { group: 'business', to: '/stays', label: 'Stays', icon: '🛏️', roles: STAFF },
   { group: 'business', to: '/courier', label: 'Courier', icon: '🪽', roles: ['ADMIN', 'FRONT_DESK', 'KEEPER'] },
   { group: 'business', to: '/customers', label: 'Customers', icon: '🧾', roles: DESK },
@@ -38,6 +39,7 @@ export const NAV: NavItem[] = [
 
   { group: 'me', to: '/my/monsters', label: 'My monsters', icon: '🐾', roles: ['OWNER'] },
   { group: 'me', to: '/my/invoices', label: 'My invoices', icon: '🧾', roles: ['OWNER'] },
+  { group: 'me', to: '/book', label: 'Book a stay', icon: '📅', roles: ['OWNER'] },
 
   { group: 'admin', to: '/admin/users', label: 'Users', icon: '👥', roles: ['ADMIN'] },
   { group: 'admin', to: '/admin/audit', label: 'Audit', icon: '🕵️', roles: ['ADMIN'] },
