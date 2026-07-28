@@ -47,6 +47,7 @@ import VetDashboardPage from './pages/medical/VetDashboardPage'
 import MonsterMedicalPage from './pages/medical/MonsterMedicalPage'
 import TicketListPage from './pages/tickets/TicketListPage'
 import TicketDetailPage from './pages/tickets/TicketDetailPage'
+import TicketBoardPage from './pages/tickets/TicketBoardPage'
 import NewTicketPage from './pages/tickets/NewTicketPage'
 import SuppliesPage from './pages/supplies/SuppliesPage'
 import ReorderPage from './pages/supplies/ReorderPage'
@@ -110,6 +111,7 @@ export default function App() {
         <Route path="/monsters/:id/medical" element={<MonsterMedicalPage />} />
         <Route path="/tickets" element={<TicketListPage />} />
         <Route path="/tickets/new" element={<NewTicketPage />} />
+        <Route path="/tickets/board" element={<TicketBoardPage />} />
         <Route path="/tickets/:id" element={<TicketDetailPage />} />
         <Route path="/supplies" element={<SuppliesPage />} />
         <Route path="/supplies/reorder" element={<ReorderPage />} />
