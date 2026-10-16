@@ -44,6 +44,7 @@ import UsersPage from './pages/admin/UsersPage'
 import AuditLogPage from './pages/admin/AuditLogPage'
 import SettingsPage from './pages/admin/SettingsPage'
 import JobsPage from './pages/admin/JobsPage'
+import RavenLogPage from './pages/admin/RavenLogPage'
 import SpeciesListPage from './pages/species/SpeciesListPage'
 import SpeciesDetailPage from './pages/species/SpeciesDetailPage'
 import SpeciesFormPage from './pages/species/SpeciesFormPage'
@@ -172,6 +173,14 @@ export default function App() {
           element={
             <RequireAuth roles={['ADMIN']}>
               <JobsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/admin/ravens"
+          element={
+            <RequireAuth roles={['ADMIN']}>
+              <RavenLogPage />
             </RequireAuth>
           }
         />
