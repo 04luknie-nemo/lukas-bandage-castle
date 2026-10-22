@@ -33,6 +33,7 @@ import { searchRouter } from './modules/search/search.routes'
 import { jobsRouter } from './modules/jobs/jobs.routes'
 import { visitsRouter } from './modules/visits/visits.routes'
 import { ownersRouter } from './modules/owners/owners.routes'
+import { myCouriersRouter } from './modules/courier/courier.owner.routes'
 
 export function createApp() {
   const app = express()
@@ -72,6 +73,7 @@ export function createApp() {
   app.use('/api/search', searchRouter)
   app.use('/api/jobs', jobsRouter)
   app.use('/api/visits', visitsRouter)
+  app.use('/api/my/couriers', myCouriersRouter)
   app.use('/api/my', ownersRouter)
   app.use('/api/stays', stayExtensionsRouter, staysRouter) // the rest of /api/stays is in legacy
 

@@ -44,6 +44,7 @@ export const NAV: NavItem[] = [
   { group: 'me', to: '/my/invoices', label: 'My invoices', icon: '🧾', roles: ['OWNER'] },
   { group: 'me', to: '/book', label: 'Book a stay', icon: '📅', roles: ['OWNER'] },
   { group: 'me', to: '/visits', label: 'Visits', icon: '👋', roles: ['OWNER'] },
+  { group: 'me', to: '/my/couriers', label: 'Courier', icon: '🪽', roles: ['OWNER'] },
 
   { group: 'admin', to: '/admin/users', label: 'Users', icon: '👥', roles: ['ADMIN'] },
   { group: 'admin', to: '/admin/audit', label: 'Audit', icon: '🕵️', roles: ['ADMIN'] },

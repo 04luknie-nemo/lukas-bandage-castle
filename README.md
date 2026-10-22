@@ -27,6 +27,7 @@ This repository is the castle's management app: a React front end and an Express
 | 🏛️ Hiring Hall | Listings, applications from overlords, contracts |
 | 💰 Billing | Invoices and payments in gold pieces |
 | 🎫 Tickets & 📦 Supplies | Broken portcullises, escaped slimes, running out of bandages |
+| 🪽 Courier & 🗓️ Rota | Wyverns that fetch monsters from their lairs and fly them home; who works which shift |
 | 📜 Bulletin | Internal news and how-to pages |
 | 🔔 Notifications, 🕵️ Audit log, ⚙️ Settings | The plumbing |
 

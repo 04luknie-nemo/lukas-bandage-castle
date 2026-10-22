@@ -15,6 +15,7 @@ import { seedTherapy } from './therapy'
 import { seedBulletin } from './bulletin'
 import { seedAudit } from './audit'
 import { seedRota } from './rota'
+import { seedCourier } from './courier'
 
 const SEED = 20220214 // the day Gorm typed `git init`
 
@@ -49,9 +50,10 @@ async function main() {
   const bulletin = await seedBulletin(prisma, world)
   await seedAudit(prisma, rng, world)
   const shifts = await seedRota(prisma, new Rng(SEED + 2), world)
+  const courier = await seedCourier(prisma, new Rng(SEED + 1), world, stays)
   console.log(`   🩺 ${records} medical records, 🛋️ ${therapy.plans} therapy plans (${therapy.sessions} sessions)`)
   console.log(`   🎫 tickets, 📦 supplies, 🏛️ Hiring Hall, 🐦 ravens, 📜 ${bulletin} Bulletin entries`)
-  console.log(`   🗓️ ${shifts} shifts on the rota`)
+  console.log(`   🗓️ ${shifts} shifts on the rota, 🪽 ${courier.trips} courier trips`)
 
   console.log(`✨ Done in ${((Date.now() - t0) / 1000).toFixed(1)}s. Log in with any account below, password "${PASSWORD}":`)
   for (const u of Object.values(world.users)) console.log(`   ${u.email.padEnd(28)} ${u.roles.join(' + ')}`)
