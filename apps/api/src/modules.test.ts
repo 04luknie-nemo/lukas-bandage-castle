@@ -81,6 +81,20 @@ describe('staff modules', () => {
     '/api/flags/detailed',
     '/api/bulletin',
     '/api/notifications',
+    '/api/visits',
+    '/api/visits/slots',
+    '/api/monster-profiles',
+    '/api/supplies/reorder',
+    '/api/jobs',
+    '/api/search?q=sn',
+    '/api/courier/couriers',
+    '/api/courier/jobs',
+    '/api/courier/route-sheet',
+    '/api/rota/week',
+    '/api/rota/staff',
+    '/api/rota/mine',
+    '/api/rota/swaps',
+    '/api/rota/time-off/pending',
   ])('admin GET %s', async (path) => {
     const res = await agents.admin.get(path)
     expect(res.status).toBe(200)
@@ -149,6 +163,12 @@ describe('customers', () => {
 
   it('owners cannot see the customer list', async () => {
     expect((await agents.owner.get('/api/customers')).status).toBe(403)
+  })
+
+  it('owners see when the wyvern is coming', async () => {
+    const res = await agents.owner.get('/api/my/couriers')
+    expect(res.status).toBe(200)
+    expect(res.body.length).toBeGreaterThan(0)
   })
 
   it('owners see their invoices', async () => {
