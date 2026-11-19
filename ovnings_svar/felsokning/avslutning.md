@@ -4,16 +4,60 @@
 
 | Del   | Labb gjord        | Övningar gjorda                      | Inte gjorda | Varför      |
 | ----- | ----------------- | ------------------------------------ | ----------- | ----------- |
-| Del 1 | [1.1](1.0/1.1.md) | [1.2](1.0/1.2.md), [1.3](1.0/1.3.md) | 1.4:        | fördjupning |
-| Del 2 | [2.1](2.0/2.1.md) | [2.2](2.0/2.2.md), [2.3](2.0/2.3.md) | 2.4:        | fördjupning |
-| Del 3 | [3.1](3.0/3.1.md) | [3.2](3.0/3.2.md), [3.3](3.0/3.3.md) | 3.4:        | fördjupning |
-| Del 4 | [4.1](4.0/4.1.md) | [4.2](4.0/4.2.md), [4.3](4.0/4.3.md) | 4.4:        | fördjupning |
-| Del 5 | [5.1](5.0/5.1.md) | [5.3](5.0/5.3.md), [5.4](5.0/5.4.md) | 5.2, 5.5:   | fördjupning |
-| Del 6 | [6.1](6.0/6.1.md) | [6.2](6.0/6.2.md)                    | 6.3, 6.4:   | fördjupning |
+| Del 1 | [1.1](1.0/1.1.md) | [1.2](1.0/1.2.md), [1.3](1.0/1.3.md) | 1.4         | fördjupning |
+| Del 2 | [2.1](2.0/2.1.md) | [2.2](2.0/2.2.md), [2.3](2.0/2.3.md) | 2.4         | fördjupning |
+| Del 3 | [3.1](3.0/3.1.md) | [3.2](3.0/3.2.md), [3.3](3.0/3.3.md) | 3.4         | fördjupning |
+| Del 4 | [4.1](4.0/4.1.md) | [4.2](4.0/4.2.md), [4.3](4.0/4.3.md) | 4.4         | fördjupning |
+| Del 5 | [5.1](5.0/5.1.md) | [5.3](5.0/5.3.md), [5.4](5.0/5.4.md) | 5.2, 5.5    | fördjupning |
+| Del 6 | [6.1](6.0/6.1.md) | [6.2](6.0/6.2.md)                    | 6.3, 6.4    | fördjupning |
 
 Fördjupningar gör jag om jag hinner, fokus för mig ligger på att se de olika momenten och att inte riskera att fastna, med tanke på den korta tiden jag har.
 
 ## 2. Mitt bästa protokoll
+
+Protokollet från [5.3](5.0/5.3.md):
+
+> 5.3 Basilisken och tuppormen
+>
+> Symptom
+> Tuppormen Clucky kan placeras i The Stone Garden, där basilisken Basil bor. Basil kan inte flytta till en lya där Clucky bor: "Basil can't move in: Cockatrice (Mutual petrification. Nobody wins.)". Regeln gäller bara åt ena hållet, trots att meddelandet säger mutual.
+>
+> Återskapa
+>
+> 1. Kör npm run db:reset och logga in som keeper.
+> 2. Lairs, The Stone Garden: placera Clucky, klicka Assign anyway för mörkervarningen. Det går.
+> 3. Försök flytta Basil till lyan där Clucky bor. Nekas.
+>
+> Hypoteser
+>
+> - Varningen "too dark" är felet. Test: läste meddelandet. Resultat: det är habitatkontrollen, som kan gås förbi. Kompatibiliteten är en annan kontroll. Föll.
+> - Regeln saknas i databasen. Test: SELECT * FROM species_compatibility. Resultat: regeln finns, men bara en gång: species_id 8, basilisk, och incompatible_species_id 9, tupporm. Höll delvis.
+> - Koden läser regeln åt ett håll. Test: läste findConflicts i lairs.service.ts. Resultat: den letar bara efter regler där species_id är den nya invånaren. Höll.
+>
+> Rotorsak
+> apps/api/src/modules/lairs/lairs.service.ts, findConflicts. Regeln är sparad en gång, basilisk mot tupporm. Funktionen letar bara efter regler där den nya invånarens art står i species_id. När Clucky flyttar in letar den efter regler för tupporm och hittar inga. Seed-skriptet, prisma/seed/stays.ts rad 279, kontrollerar däremot åt båda hållen.
+>
+> Varför testet är grönt
+> lairs.service.test.ts rad 48–53 saknar await, så expect kontrollerar ett Promise, som alltid är truthy. Även med await hade [] varit truthy. Testet kan inte misslyckas.
+>
+> Åtgärd
+> Kontrollera regeln åt båda hållen, som seed-skriptet gör. Rätta testet: lägg till await och kontrollera exakt resultat med toEqual. Kontroll: Clucky nekas i The Stone Garden, och testet blir rött före fixen och grönt efter.
+>
+> Vilka antaganden visade sig vara fel?
+> Att "too dark" var felet, och att ett grönt test betyder att regeln fungerar.
+>
+> Hjälpfråga (5.3)
+>
+> 1. Vad jag förväntade mig: att Clucky inte skulle få vara med i samma lair som Basil.
+> 2. Vad som hände: Clucky hamnade i lairet. Jag testade flytta Basil till en lya där Clucky bor, men det gick inte.
+> 3. Vad jag hade provat: tittat på varningen "too dark" och kollat efter SQL:en, som visade sig vara en SELECT mot species_compatibility, och kollat där i. Antog att regeln skulle vara mutual.
+> 4. Vad jag hade uteslutit: att regeln saknas helt, eftersom Basil nekas.
+>
+> Hjälpfrågan skrev jag i efterhand, efter att felet var löst.
+>
+> Vad i frågan pekade mot svaret? Punkt 4: regeln finns, eftersom Basil nekas. Då återstod bara att den läses åt ett håll.
+
+### Varför jag valde det
 
 Jag valde 5.3 eftersom den fick mig att tänka på att felmeddelanden inte alltid stämmer och att gröna tester inte alltid är rätt bara för att de är gröna. Felmeddelandet sa "Mutual petrification", men regeln gällde bara åt ett håll. Testet saknade await, så det kontrollerade ett Promise, som alltid är truthy. Jag trodde först att varningen "too dark" tog över kompatibilitetskontrollen, men det visade sig vara två separata kontroller. Det var också roligt att jobba med objekt med lustiga namn.
 
