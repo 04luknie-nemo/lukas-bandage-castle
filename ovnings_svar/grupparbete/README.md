@@ -89,10 +89,10 @@ Protokollföraren skrev ner det här under passet. Det är gruppens gemensamma a
 Felsökning 1.1 som navigatör, 3.1 som ifrågasättare, 3.3 som förare och Problemanalys 2.1 som protokollförare. Jag fick prova alla fyra rollerna en gång var.
 
 **Ett tillfälle då någon annan i gruppen tänkte annorlunda än jag. Vad lärde jag mig av det?**
-[Fyll i]
+I Felsökning 1.1 pratade gruppen mycket om att använda formatGold, med bara en funktion och på ett ställe. Det löser inte helheten. Jag fick med mig dem till slut på att API:t behöver skicka koppar som heltal för en helhetslösning, enligt ADR-006. Jag lärde mig att det tar tid att få en grupp att se skillnaden mellan att laga symptomet och rotorsaken, och att det hjälper att peka på något konkret.
 
 **Ett tillfälle då jag hjälpte någon. Vilken fråga ställde jag?**
-[Fyll i]
+I Problemanalys 2.1 fick Christian ReferenceError när rules.length lades under Watch. Jag guidade Christian att stega in i rulesFor med F11, eftersom rules bara finns där. Frågan jag ställde var vilken funktion den gula raden stod i.
 
 **Vad skulle jag göra annorlunda nästa gång jag felsöker tillsammans med andra?**
-[Fyll i]
+Kolla att alla står på samma sak innan vi börjar en labb, så att ingen fastnar på grund av en annan gren eller en debugger som står still.
