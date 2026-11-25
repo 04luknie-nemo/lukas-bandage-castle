@@ -114,3 +114,13 @@ Dag 2 följer jag ett klick från webben genom API:t ner till databasen och till
 Dag 3 läser jag historiken. git shortlog visar vilka som har jobbat där, och git log visar epokerna. Jag läser ADR:erna och jämför dem med koden, eftersom dokumenten inte alltid stämmer.
 
 Nästa gång skulle jag lägga lite mer tid på varje del av ett nytt repo.
+
+---
+
+## 4. Vad jag tar med mig
+
+Det svåraste var att uppgifterna var luddiga, och jag lade nog ner mest tid på datumbuggen i 1.4. Där hade debuggern kunnat hjälpa, men den lärde jag mig först senare i Problemanalys.
+
+Det enklaste var git. Kommandona i Del 6 gick fort, och det mest lärorika var git bisect i 6.8. Första gången markerade jag fel och hamnade på ADR-008, men när jag testade varje steg hittade jag commiten som bröt supplies-länken.
+
+Jag förstår bättre att inte lita blint på kommentarer, kod, tester och dokumentation. Kommentaren i lateDays skyllde på tidszoner, testet var avstängt och ARCHITECTURE.md ritade en cache som inte finns. Det jag tar med mig är att kontrollera själv innan jag litar på det som står.
