@@ -2,14 +2,16 @@
 
 ## 1. Översikt över övningarna
 
-| Del   | Labb gjord        | Övningar gjorda                      | Inte gjorda, och varför                                                                                               |
-| ----- | ----------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| Del 1 | [1.1](1.0/1.1.md) | [1.2](1.0/1.2.md), [1.3](1.0/1.3.md) | 1.4, 1.5: fördjupning, frivilliga                                                                                     |
-| Del 2 | [2.1](2.0/2.1.md) | [2.3](2.0/2.3.md)                    | 2.2: siktade på 50 procent. 2.4, 2.5: fördjupning, frivilliga                                                         |
-| Del 3 | [3.1](3.0/3.1.md) | [3.3](3.0/3.3.md)                    | 3.2: siktade på 50 procent. 3.4: fördjupning, frivillig                                                               |
-| Del 4 | Påbörjad          |                                      | 4.1: kom till steg 5 men förstod inte Caught Exceptions. 4.2, 4.3: siktade på 50 procent. 4.4: fördjupning, frivillig |
-| Del 5 | [5.1](5.0/5.1.md) |                                      | 5.2: siktade på 50 procent. 5.3: fördjupning, frivillig                                                               |
-| Del 6 | [6.1](6.0/6.1.md) |                                      | 6.2: siktade på 50 procent. 6.3: fördjupning, frivillig                                                               |
+| Del   | Labb gjord        | Övningar gjorda                      | Inte gjorda, och varför                              |
+| ----- | ----------------- | ------------------------------------ | ---------------------------------------------------- |
+| Del 1 | [1.1](1.0/1.1.md) | [1.2](1.0/1.2.md), [1.3](1.0/1.3.md) | 1.4, 1.5: fördjupning, frivilliga                    |
+| Del 2 | [2.1](2.0/2.1.md) | [2.3](2.0/2.3.md)                    | 2.2: siktade på G. 2.4, 2.5: fördjupning, frivilliga |
+| Del 3 | [3.1](3.0/3.1.md) | [3.3](3.0/3.3.md)                    | 3.2: siktade på G. 3.4: fördjupning, frivillig       |
+| Del 4 | [4.1](4.0/4.1.md) | [4.2](4.0/4.2.md)                    | 4.3: siktade på G. 4.4: fördjupning, frivillig       |
+| Del 5 | [5.1](5.0/5.1.md) | [5.2](5.0/5.2.md)                    | 5.3: fördjupning, frivillig                          |
+| Del 6 | [6.1](6.0/6.1.md) | [6.2](6.0/6.2.md)                    | 6.3: fördjupning, frivillig                          |
+
+Jag följde lärarens G-krav: labben plus minst en Öva själv i varje del.
 
 ## 2. Mitt bästa protokoll
 
