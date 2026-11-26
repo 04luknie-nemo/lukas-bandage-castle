@@ -55,7 +55,7 @@ Protokollet i 1.3 var nog roligast. Det var bland de tydligaste uppgifterna, dä
 
 I 1.1 visade detaljsidan för faktura #238 50 gp och v2, fast Billing v2 skulle vara avstängt. Hade jag bara läst .env-filen hade det stått false, och då hade jag tänkt att flaggan var av. Med en brytpunkt på rad 30 i billing.routes.ts och Step Into kom jag in i billingV2Enabled. Där visade debuggern "false" med citattecken, alltså en sträng och inte en bool. I Debug Console gav !!process.env.ENABLE_BILLING_V2 true, eftersom variabeln inte var tom. Det såg jag inte genom att läsa koden.
 
-Villkorlig brytpunkt var också användbart, till exempel i 2.1 och 1.3. Annars måste jag köra igenom om och om igen tills jag kommer dit jag ville stanna, och stega igenom med risk att missa stegningen. Med villkoret stannade den bara där jag ville. Protokollet i 1.1 var också bland de roligare.
+Villkorlig brytpunkt var också användbart, till exempel i 2.1 och 1.3. Annars måste jag köra igenom om och om igen tills jag kommer dit jag ville stanna, och stega igenom med risk att missa stegningen. Med villkoret stannade den bara där jag ville. I .NET hade GetValue <bool> tolkat texten false rätt, så det här felet hade jag aldrig letat efter. Debuggern visade vilken typ värdet hade, inte bara vad det stod.
 
 ### Fel verktyg
 
@@ -63,7 +63,7 @@ I 6.1 visade startsidan Lady Grimsbys monster efter att jag loggat ut och loggat
 
 Debuggern i API:t var fel verktyg, men att den inte stannade var ändå information. Den uteslöt hela servern. Debuggern i webbläsaren gav sedan svaret: logout sätter user till null, men tömmer aldrig cachen.
 
-Det lärde mig att ett verktyg som inte ger utslag också är ett resultat, så länge jag vet vad det betyder. Med tabellen i Del 6 hade jag börjat med Network och sett direkt att anropet saknades.
+Det lärde mig att ett verktyg som inte ger utslag också är ett resultat, så länge jag vet vad det betyder. Med tabellen i Del 6 hade jag börjat med Network och sett direkt att anropet saknades. Nästa gång frågar jag först om anropet ens görs, innan jag sätter en brytpunkt på servern.
 
 ### Loggning
 
@@ -93,7 +93,8 @@ I 5.1 var det PRISMA_LOG som visade problemet på artsidan. Network Timing sa ba
 
 I Transportfactory använder jag EF Core med Repository och Unit of Work. Där vill jag se mina queries för att kunna räkna dem och kolla prestanda. I EF Core slår man på det med kategorin Microsoft.EntityFrameworkCore.Database.Command i appsettings.json, eller med ToQueryString() på en enskild fråga.
 
-Enligt dokumentet uppstår N+1 i EF Core när man läser relationer i en loop utan Include. Det är samma sak som rulesFor gjorde i Bandage Castle, en fråga per regel. Med loggen påslagen kan jag se om mina repositories gör samma misstag innan det blir långsamt.
+Enligt dokumentet uppstår N+1 i EF Core när man läser relationer i en loop utan Include. Det är samma sak som rulesFor gjorde i Bandage Castle, en fråga per regel. Med loggen påslagen kan jag se om mina repositories gör samma misstag innan det blir långsamt. Jag vill hellre se 74 frågor i loggen på min egen dator än märka dem när kunderna klagar på att sidan är långsam.
+S
 
 ## 4. Vad jag tar med mig
 

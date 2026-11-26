@@ -79,13 +79,15 @@ Redan första dagen jämförde jag docs/ARCHITECTURE.md med ADR:erna, ändringsl
 
 Raven Post skulle ersättas av NotificationService enligt ADR-007, men koden finns kvar. NotificationService skickar fortfarande vidare till Raven Post, som jag såg i exemplet med #23. I 3.6 såg jag att legacy/README säger att customers fortfarande används, fast app.ts säger att modules/customers ersätter den. ADR-004 lovade att legacy skulle vara borta i slutet av 2023.
 
-Att en ADR är ersatt betyder inte att ett annat dokument är fel, så jag fick jämföra datum och innehåll först. En ADR visar vad man bestämde, koden visar vad som hände. Nu kollar jag datum för när dokumentationen lades till, parallellt med att jag läser den.
+Att en ADR är ersatt betyder inte att ett annat dokument är fel, så jag fick jämföra datum och innehåll först. En ADR visar vad man bestämde, koden visar vad som hände. Nu kollar jag datum för när dokumentationen lades till, parallellt med att jag läser den. Jag litar mest på koden och git-historiken, och läser ADR:erna för att förstå varför något byggdes.
 
 ### Claude Code
 
 I 7.11 lät jag Claude Code skriva ett test för artsökningen i #7 och pusha det till grenen fix/species-search. När jag körde testet fick jag "No test files found". Jag hade själv skapat en gren med samma namn lokalt, så min gren saknade filen. Jag hämtade Claudes version med git pull origin fix/species-search, och då blev testet rött som det skulle.
 
 I 5.3 gav Claude mig en sökning på lairsRouter.post('/:id/assignments') som inte gav någon träff, eftersom raden var uppdelad på flera rader. Jag testade själv och delade upp sökningen. DeepWiki, som jag testade första veckan, hamnade i seed-filen i stället för källkoden.
+
+Jag förväntade mig en träff i lairs.routes.ts, men sökningen gav ingenting. Då öppnade jag filen själv och såg att anropet var uppdelat på flera rader, så jag sökte på en kortare del i stället.
 
 Nu ser jag till att testa det Claude ger innan något hinner gå ut. Går det ut kan värre saker hända än de små sakerna som hände här.
 
@@ -113,7 +115,7 @@ Dag 2 följer jag ett klick från webben genom API:t ner till databasen och till
 
 Dag 3 läser jag historiken. git shortlog visar vilka som har jobbat där, och git log visar epokerna. Jag läser ADR:erna och jämför dem med koden, eftersom dokumenten inte alltid stämmer.
 
-Nästa gång skulle jag lägga lite mer tid på varje del av ett nytt repo.
+Jag börjar med appen, eftersom koden är lättare att förstå när jag vet vad den gör för användaren och vilka roller som finns. Historiken kommer sist, eftersom den svarar på varför, och den frågan kan jag ställa först när jag vet vad koden gör.
 
 ---
 

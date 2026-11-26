@@ -75,7 +75,7 @@ Att gissa sig fram kan bli rörigt och bli fel utan ett tydligt mål. Med en hyp
 
 I 4.2 stod det i webben att Brambert är 34, men han har inte fyllt 34 än. Han föddes 1992-11-22 och borde vara 33 ett litet tag till. Jag tittade i Network efter API-svaret, och API:t skickade 34. Då låg inte felet i webben, webben förde bara det vidare. Jag sökte på ageInYears och hittade till filen. I packages/shared/src/dates.ts räknar ageInYears bara år, och månader och dagar tas inte med i beräkningen.
 
-Funktionen hämtas från sex olika ställen. Om man inte lagar i shared kommer problemet att kvarstå på de andra ställena, och möjligen på framtida ställen. Fixar jag det i en fil i webben har jag två olika uträkningar. Bäst är att ha uträkningen på ett ställe, i shared, så att alla ställen garanterat får rätt ålder. Om jag fixar orsaken i shared kommer alla ställen som hämtar åldern att visa rätt.
+Funktionen hämtas från sex olika ställen. Om man inte lagar i shared kommer problemet att kvarstå på de andra ställena, och möjligen på framtida ställen. Fixar jag det i en fil i webben har jag två olika uträkningar. Bäst är att ha uträkningen på ett ställe, i shared, så att alla ställen garanterat får rätt ålder. Om jag fixar orsaken i shared kommer alla ställen som hämtar åldern att visa rätt. Hade jag lagat symptomet i webben hade Brambert visat rätt ålder på en sida, men fel på de andra fem.
 
 ### Felmeddelanden
 
