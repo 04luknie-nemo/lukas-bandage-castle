@@ -1,9 +1,5 @@
 # Felsökning, avslutning
 
-## Grupparbete
-
-Grupparbetet, med roller, gruppens anteckningar och min reflektion, finns i [grupparbete/README.md](../grupparbete/README.md).
-
 ## 1. Översikt över övningarna
 
 | Del   | Labb gjord        | Övningar gjorda                      | Inte gjorda | Varför      |
@@ -120,3 +116,7 @@ Det svåraste var 6.2, som var förvirrande. Jag vet inte om det hade att göra 
 Det mest lärorika var att kommentarer inte alltid stämmer med vad som händer. Antingen säger kommentaren något, testet är skippat och koden som körs är trasig, som i 3.3. Eller så är koden trasig fast kommentaren säger något annat. Eller så fungerar koden, men kommentaren är vilseledande.
 
 Jag fick insikt i att försöka mer själv och att absolut inte stressa, eftersom jag lätt tappar tålamodet när jag är stressad. Jag ska fortsätta dubbelkolla det Claude gör. När Claude gör mycket samtidigt är det lätt att detaljer missas.
+
+## Grupparbete
+
+Grupparbetet, med roller, gruppens anteckningar och min reflektion, finns i [grupparbete/README.md](../grupparbete/README.md).
