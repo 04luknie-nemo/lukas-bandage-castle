@@ -3,13 +3,13 @@
 | Del   | Gjorda uppgifter                    | Inte gjorda, och varför            | Fördjupning som jag gjort |
 | ----- | ----------------------------------- | ---------------------------------- | ------------------------- |
 | Del 0 | 0.1–0.6                             |                                    |                           |
-| Del 1 | 1.1–1.6                             | 1.7–1.11:                          |                           |
-| Del 2 | 2.1, 2.2, 2.3                       | 2.4–2.8:                           |                           |
-| Del 3 | 3.3, 3.4, 3.6, 3.7                  | 3.1, 3.2, 3.5, 3.8–3.10:           |                           |
-| Del 4 | 4.1, 4.3, 4.5                       | 4.2, 4.4, 4.6–4.8:                 |                           |
-| Del 5 | Exemplet, 5.1–5.4                   | 5.5–5.9:                           |                           |
-| Del 6 | 6.1–6.8                             | 6.9:                               |                           |
-| Del 7 | 7.1, 7.3, exemplet, 7.6, 7.10, 7.11 | 7.2, 7.4, 7.5, 7.7–7.9, 7.12–7.14: |                           |
+| Del 1 | 1.1–1.6                             | 1.7–1.11: fördjupning, frivilliga |                           |
+| Del 2 | 2.1, 2.2, 2.3                       | 2.4–2.7: siktade på G. 2.8: fördjupning |                           |
+| Del 3 | 3.3, 3.4, 3.6, 3.7                  | 3.1, 3.2, 3.5, 3.8, 3.10: siktade på G. 3.9: feature flag, kommer igen i Problemanalys labb 1.1 |                           |
+| Del 4 | 4.1, 4.3, 4.5                       | 4.2, 4.6: siktade på G. 4.4: liknar 4.1 och 4.3. 4.7: överkurs. 4.8: fördjupning |                           |
+| Del 5 | Exemplet, 5.1–5.4                   | 5.5–5.7: siktade på G. 5.8: liknar 4.1 och 4.3. 5.9: feature flag, kommer igen i Problemanalys labb 1.1 |                           |
+| Del 6 | 6.1–6.8                             | 6.9: fördjupning | 6.2, 6.4 och 6.7, utöver G-minimum |
+| Del 7 | 7.1, 7.3, exemplet, 7.6, 7.10, 7.11 | 7.2, 7.4, 7.5: siktade på G. 7.7–7.9: samma triage som 7.6. 7.12–7.14: överkurs |                           |
 
 Följer 50 % G för att hinna med.
 
