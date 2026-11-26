@@ -1,5 +1,9 @@
 # Felsökning, avslutning
 
+## Grupparbete
+
+Grupparbetet, med roller, gruppens anteckningar och min reflektion, finns i [grupparbete/README.md](../grupparbete/README.md).
+
 ## 1. Översikt över övningarna
 
 | Del   | Labb gjord        | Övningar gjorda                      | Inte gjorda | Varför      |
